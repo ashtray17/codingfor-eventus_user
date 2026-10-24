@@ -1,0 +1,73 @@
+{
+  "version": "1.0.0",
+  "layout_name": "maintenance",
+  "extends": "_user_base",
+  "meta": {
+    "title": "$t:error.maintenance.title",
+    "description": "$t:error.maintenance.description"
+  },
+  "slots": {
+    "content": [
+      {
+        "type": "basic",
+        "name": "Div",
+        "props": {
+          "className": "flex-center min-h-[50vh] justify-center"
+        },
+        "children": [
+          {
+            "type": "basic",
+            "name": "Div",
+            "props": {
+              "className": "text-center px-4"
+            },
+            "children": [
+              {
+                "type": "basic",
+                "name": "Div",
+                "props": {
+                  "className": "font-mono text-6xl font-bold text-faint mb-4"
+                },
+                "text": "⚙"
+              },
+              {
+                "type": "basic",
+                "name": "H1",
+                "props": {
+                  "className": "text-2xl font-bold text-ink mb-2"
+                },
+                "text": "$t:error.maintenance.title"
+              },
+              {
+                "type": "basic",
+                "name": "Span",
+                "props": {
+                  "className": "block text-muted mb-6"
+                },
+                "text": "$t:error.maintenance.description"
+              },
+              {
+                "type": "basic",
+                "name": "Button",
+                "props": {
+                  "type": "button",
+                  "className": "cursor-pointer rounded-ctl bg-accent px-5 py-2.5 text-[13px] font-semibold text-accent-ink transition-colors duration-150 hover:bg-accent-hover"
+                },
+                "actions": [
+                  {
+                    "type": "click",
+                    "handler": "navigate",
+                    "params": {
+                      "path": "/"
+                    }
+                  }
+                ],
+                "text": "$t:error.back_to_home"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

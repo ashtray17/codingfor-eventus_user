@@ -1,0 +1,722 @@
+{
+  "version": "1.0.0",
+  "layout_name": "post",
+  "permissions": [],
+  "extends": "_user_base",
+  "meta": {
+    "title": "$t:community.post.page_title",
+    "description": "$t:community.post.page_description",
+    "seo": {
+      "enabled": true,
+      "extensions": [
+        { "type": "module", "id": "sirsoft-board" }
+      ],
+      "data_sources": ["post"],
+      "page_type": "post",
+      "toggle_setting": "$module_settings:sirsoft-board:seo.seo_post_detail",
+      "vars": {
+        "site_name": "$core_settings:general.site_name",
+        "board_name": "{{post.data.board.name ?? ''}}",
+        "post_title": "{{post.data.title ?? ''}}"
+      },
+      "priority": 0.5,
+      "changefreq": "monthly",
+      "og": {
+        "type": "article",
+        "title": "{{_seo.post.title ?? post.data.title ?? ''}}",
+        "description": "{{_seo.post.description ?? post.data.content ?? ''}}"
+      }
+    }
+  },
+  "data_sources": [
+    {
+      "_comment": "게시글 상세와 포함 댓글 조회",
+      "id": "post",
+      "label_key": "$t:community.data_source.post",
+      "type": "api",
+      "endpoint": "/api/modules/sirsoft-board/boards/{{route.slug}}/posts/{{route.id}}",
+      "method": "GET",
+      "auto_fetch": true,
+      "auth_mode": "optional",
+      "loading_strategy": "progressive",
+      "refetchOnMount": true,
+      "params": {},
+      "fallback": {
+        "data": {
+          "title": "",
+          "content": "",
+          "author": {
+            "name": ""
+          },
+          "created_at": "",
+          "created_at_formatted": "",
+          "view_count": 0,
+          "comment_count": 0,
+          "category": "",
+          "comments": [],
+          "board": {
+            "name": "",
+            "use_comment": false
+          },
+          "abilities": {
+            "can_read_comments": false,
+            "can_write_comments": false
+          }
+        }
+      },
+      "errorHandling": {
+        "401": {
+          "handler": "showErrorPage",
+          "params": {
+            "target": "content"
+          }
+        },
+        "403": {
+          "handler": "showErrorPage",
+          "params": {
+            "target": "content"
+          }
+        },
+        "404": {
+          "handler": "showErrorPage",
+          "params": {
+            "target": "content"
+          }
+        }
+      }
+    },
+    {
+      "_comment": "추천 상태와 추천 수 조회",
+      "id": "recommendation",
+      "label_key": "$t:community.data_source.recommendation",
+      "type": "api",
+      "endpoint": "/api/modules/codingfor-recommend/boards/{{route.slug}}/posts/{{route.id}}/recommendation",
+      "method": "GET",
+      "auto_fetch": true,
+      "auth_mode": "optional",
+      "loading_strategy": "progressive",
+      "refetchOnMount": true,
+      "params": {},
+      "fallback": {
+        "data": {
+          "recommend_count": 0,
+          "is_recommended": false
+        }
+      },
+      "errorHandling": {
+        "401": {
+          "handler": "suppress"
+        },
+        "403": {
+          "handler": "suppress"
+        },
+        "404": {
+          "handler": "suppress"
+        }
+      }
+    }
+  ],
+  "slots": {
+    "content": [
+      {
+        "id": "post_root",
+        "type": "basic",
+        "name": "Div",
+        "children": [
+          {
+            "id": "post_crumb",
+            "type": "basic",
+            "name": "Div",
+            "props": {
+              "className": "mb-4 flex items-center gap-1.5"
+            },
+            "children": [
+              {
+                "id": "post_crumb_board",
+                "type": "basic",
+                "name": "A",
+                "props": {
+                  "href": "/board/{{route.slug}}",
+                  "className": "text-[11px] text-muted transition-colors duration-150 hover:text-accent"
+                },
+                "text": "{{post?.data?.board?.name ?? \"\"}}"
+              },
+              {
+                "id": "post_crumb_sep",
+                "type": "basic",
+                "name": "Span",
+                "props": {
+                  "className": "font-mono text-[11px] text-faint"
+                },
+                "text": "/"
+              },
+              {
+                "id": "post_crumb_id",
+                "type": "basic",
+                "name": "Span",
+                "props": {
+                  "className": "tnum font-mono text-[11px] text-faint"
+                },
+                "text": "{{route.id}}"
+              }
+            ]
+          },
+          {
+            "id": "post_header",
+            "type": "basic",
+            "name": "Div",
+            "props": {
+              "className": "rounded-card rounded-b-none border border-rule bg-paper-2 px-5 pt-5 pb-4"
+            },
+            "children": [
+              {
+                "id": "post_title_row",
+                "type": "basic",
+                "name": "Div",
+                "props": {
+                  "className": "flex items-baseline gap-2"
+                },
+                "children": [
+                  {
+                    "id": "post_category",
+                    "type": "basic",
+                    "name": "Span",
+                    "props": {
+                      "className": "shrink-0 rounded-ctl bg-accent-wash px-1.5 py-0.5 text-[10px] font-semibold text-accent"
+                    },
+                    "if": "{{post?.data?.category}}",
+                    "text": "{{post?.data?.category ?? \"\"}}"
+                  },
+                  {
+                    "id": "post_title",
+                    "type": "basic",
+                    "name": "H1",
+                    "props": {
+                      "className": "min-w-0 text-[22px] leading-8 font-bold tracking-[-0.03em] text-ink sm:text-[26px] sm:leading-9"
+                    },
+                    "text": "{{post?.data?.title ?? \"\"}}"
+                  }
+                ]
+              },
+              {
+                "id": "post_meta",
+                "type": "basic",
+                "name": "Div",
+                "props": {
+                  "className": "mt-3 flex flex-wrap items-baseline gap-x-4 gap-y-1"
+                },
+                "children": [
+                  {
+                    "id": "post_author",
+                    "type": "basic",
+                    "name": "Span",
+                    "props": {
+                      "className": "text-[13px] font-semibold text-ink-2"
+                    },
+                    "text": "{{post?.data?.author?.name ?? \"-\"}}"
+                  },
+                  {
+                    "id": "post_meta_date",
+                    "type": "basic",
+                    "name": "Div",
+                    "props": {
+                      "className": "flex items-baseline gap-1.5"
+                    },
+                    "children": [
+                      {
+                        "id": "post_meta_date_label",
+                        "type": "basic",
+                        "name": "Span",
+                        "props": {
+                          "className": "text-[10px] tracking-[0.1em] text-faint"
+                        },
+                        "text": "$t:community.post.meta_date"
+                      },
+                      {
+                        "id": "post_meta_date_value",
+                        "type": "basic",
+                        "name": "Span",
+                        "props": {
+                          "className": "tnum text-[12px] text-muted"
+                        },
+                        "text": "{{post?.data?.created_at_formatted ?? \"\"}}"
+                      }
+                    ]
+                  },
+                  {
+                    "id": "post_meta_views",
+                    "type": "basic",
+                    "name": "Div",
+                    "props": {
+                      "className": "flex items-baseline gap-1.5"
+                    },
+                    "children": [
+                      {
+                        "id": "post_meta_views_label",
+                        "type": "basic",
+                        "name": "Span",
+                        "props": {
+                          "className": "text-[10px] tracking-[0.1em] text-faint"
+                        },
+                        "text": "$t:community.post.meta_views"
+                      },
+                      {
+                        "id": "post_meta_views_value",
+                        "type": "basic",
+                        "name": "Span",
+                        "props": {
+                          "className": "tnum font-mono text-[12px] text-muted"
+                        },
+                        "text": "{{post?.data?.view_count ?? 0}}"
+                      }
+                    ]
+                  },
+                  {
+                    "id": "post_meta_comments",
+                    "type": "basic",
+                    "name": "Div",
+                    "props": {
+                      "className": "flex items-baseline gap-1.5"
+                    },
+                    "children": [
+                      {
+                        "id": "post_meta_comments_label",
+                        "type": "basic",
+                        "name": "Span",
+                        "props": {
+                          "className": "text-[10px] tracking-[0.1em] text-faint"
+                        },
+                        "text": "$t:community.post.meta_comments"
+                      },
+                      {
+                        "id": "post_meta_comments_value",
+                        "type": "basic",
+                        "name": "Span",
+                        "props": {
+                          "className": "tnum font-mono text-[12px] text-muted"
+                        },
+                        "text": "{{(post?.data?.comments ?? []).length}}"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "post_body",
+            "type": "basic",
+            "name": "Div",
+            "props": {
+              "className": "rounded-card rounded-t-none border border-t-0 border-rule bg-paper-2 px-5 py-6"
+            },
+            "children": [
+              {
+                "id": "post_content",
+                "type": "extension_point",
+                "name": "html_content",
+                "if": "{{post?.data?.content}}",
+                "props": {
+                  "content": "{{post?.data?.content ?? ''}}",
+                  "isHtml": "{{(post?.data?.content_mode ?? 'text') === 'html'}}",
+                  "className": "max-w-[70ch] text-[15px] leading-[1.85] text-ink-2 [&_img]:max-w-full [&_img]:h-auto"
+                },
+                "default": [
+                  {
+                    "type": "composite",
+                    "name": "HtmlContent",
+                    "props": {
+                      "content": "{{post?.data?.content ?? ''}}",
+                      "isHtml": "{{(post?.data?.content_mode ?? 'text') === 'html'}}",
+                      "className": "max-w-[70ch] text-[15px] leading-[1.85] text-ink-2 [&_img]:max-w-full [&_img]:h-auto"
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "post_content_blocked",
+                "type": "basic",
+                "name": "Div",
+                "props": {
+                  "className": "rounded-card border border-rule bg-paper-2 px-4 py-8 text-center text-[13px] text-muted"
+                },
+                "if": "{{!post?.data?.content}}",
+                "text": "$t:community.post.content_unavailable"
+              }
+            ]
+          },
+          {
+            "id": "post_actions",
+            "type": "basic",
+            "name": "Div",
+            "props": {
+              "className": "mt-5 flex items-center justify-between gap-3"
+            },
+            "children": [
+              {
+                "id": "btn_list",
+                "type": "basic",
+                "name": "Button",
+                "props": {
+                  "type": "button",
+                  "className": "cursor-pointer rounded-ctl border border-rule px-3.5 py-2 text-[13px] font-medium text-muted transition-colors duration-150 hover:border-rule-2 hover:text-ink"
+                },
+                "actions": [
+                  {
+                    "type": "click",
+                    "handler": "navigate",
+                    "params": {
+                      "path": "/board/{{route?.slug}}"
+                    }
+                  }
+                ],
+                "text": "$t:community.post.back_to_list"
+              },
+              {
+                "id": "btn_edit",
+                "type": "basic",
+                "name": "Button",
+                "if": "{{!post?.data?.deleted_at && ((post?.data?.is_author && post?.data?.abilities?.can_write) || post?.data?.abilities?.can_manage)}}",
+                "props": {
+                  "type": "button",
+                  "className": "cursor-pointer rounded-ctl border border-rule px-3.5 py-2 text-[13px] font-medium text-muted transition-colors duration-150 hover:border-rule-2 hover:text-ink"
+                },
+                "actions": [
+                  {
+                    "type": "click",
+                    "handler": "navigate",
+                    "params": {
+                      "path": "/board/{{route.slug}}/{{route.id}}/edit"
+                    }
+                  }
+                ],
+                "text": "$t:community.post.edit"
+              },
+              {
+                "id": "btn_recommend",
+                "type": "basic",
+                "name": "Button",
+                "props": {
+                  "type": "button",
+                   "className": "cursor-pointer rounded-ctl border px-3.5 py-2 text-[13px] font-medium transition-colors duration-150 {{recommendation?.data?.is_recommended ? 'border-accent bg-accent-wash text-accent' : 'border-rule text-muted hover:border-rule-2 hover:text-ink'}}",
+                   "aria-pressed": "{{recommendation?.data?.is_recommended === true}}"
+                },
+                "actions": [
+                  {
+                    "type": "click",
+                    "handler": "apiCall",
+                    "auth_required": true,
+                    "target": "/api/modules/codingfor-recommend/boards/{{route.slug}}/posts/{{route.id}}/recommend",
+                    "params": {
+                      "method": "POST"
+                    },
+                    "onSuccess": [
+                      {
+                        "handler": "refetchDataSource",
+                        "params": {
+                         "dataSourceId": "recommendation"
+                        }
+                      }
+                    ]
+                  }
+                ],
+                 "text": "{{recommendation?.data?.is_recommended ? '$t:community.post.recommended' : '$t:community.post.recommend'}} {{recommendation?.data?.recommend_count ?? 0}}"
+              }
+            ]
+          },
+          {
+            "id": "comment_section",
+            "type": "basic",
+            "name": "Div",
+            "props": {
+              "className": "mt-6 overflow-hidden rounded-card border border-rule bg-paper-2 px-5 py-4"
+            },
+            "children": [
+              {
+                "id": "comment_head",
+                "type": "basic",
+                "name": "Div",
+                "props": {
+                  "className": "flex items-baseline gap-2 border-b border-rule pb-2"
+                },
+                "children": [
+                  {
+                    "id": "comment_head_title",
+                    "type": "basic",
+                    "name": "H2",
+                    "props": {
+                      "className": "text-[15px] font-bold tracking-[-0.02em] text-ink"
+                    },
+                    "text": "$t:community.post.comments_title"
+                  },
+                  {
+                    "id": "comment_head_count",
+                    "type": "basic",
+                    "name": "Span",
+                    "props": {
+                      "className": "tnum font-mono text-[12px] font-semibold text-accent"
+                    },
+                    "text": "{{(post?.data?.comments ?? []).length}}"
+                  }
+                ]
+              },
+              {
+                "id": "comment_empty",
+                "type": "basic",
+                "name": "Div",
+                "props": {
+                  "className": "border-b border-rule py-8 text-center text-[13px] text-faint"
+                },
+                "if": "{{(post?.data?.comments ?? []).length === 0}}",
+                "text": "$t:community.post.comments_empty"
+              },
+              {
+                "id": "comment_list",
+                "type": "basic",
+                "name": "Div",
+                "if": "{{(post?.data?.comments ?? []).length > 0}}",
+                "children": [
+                  {
+                    "id": "comment_item_{{comment.id}}",
+                    "type": "basic",
+                    "name": "Div",
+                    "iteration": {
+                      "source": "{{post?.data?.comments ?? []}}",
+                      "item_var": "comment"
+                    },
+                    "props": {
+                      "className": "border-b border-rule py-3.5"
+                    },
+                    "children": [
+                      {
+                        "id": "comment_meta_{{comment.id}}",
+                        "type": "basic",
+                        "name": "Div",
+                        "props": {
+                          "className": "flex items-baseline gap-2"
+                        },
+                        "children": [
+                          {
+                            "id": "comment_author_{{comment.id}}",
+                            "type": "basic",
+                            "name": "Span",
+                            "props": {
+                              "className": "text-[13px] font-semibold text-ink"
+                            },
+                            "text": "{{comment?.author?.name ?? \"-\"}}"
+                          },
+                          {
+                            "id": "comment_date_{{comment.id}}",
+                            "type": "basic",
+                            "name": "Span",
+                            "props": {
+                              "className": "tnum text-[11px] text-faint"
+                            },
+                            "text": "{{comment?.created_at_formatted ?? \"\"}}"
+                          }
+                        ]
+                      },
+                      {
+                        "id": "comment_body_{{comment.id}}",
+                        "type": "basic",
+                        "name": "Div",
+                        "props": {
+                          "className": "mt-1.5 max-w-[70ch] text-[14px] leading-[1.7] whitespace-pre-line text-ink-2"
+                        },
+                        "text": "{{comment?.content ?? \"\"}}"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "comment_form",
+                "type": "basic",
+                "name": "Div",
+                "if": "{{post?.data?.abilities?.can_write_comments === true}}",
+                "props": {
+                  "className": "mt-5 border-t border-rule pt-4"
+                },
+                "children": [
+                  {
+                    "id": "guest_fields",
+                    "type": "basic",
+                    "name": "Div",
+                    "if": "{{!_global.currentUser?.uuid}}",
+                    "props": {
+                      "className": "mb-3 grid grid-cols-1 gap-2 sm:grid-cols-2"
+                    },
+                    "children": [
+                      {
+                        "id": "guest_comment_author",
+                        "type": "basic",
+                        "name": "Input",
+                        "props": {
+                          "type": "text",
+                          "name": "author_name",
+                          "autoComplete": "nickname",
+                          "placeholder": "$t:community.post.guest_name_placeholder",
+                          "aria-label": "$t:community.post.guest_name_placeholder",
+                          "className": "h-11 w-full rounded-ctl border border-rule bg-paper px-3 text-[13px] text-ink transition-colors duration-150 placeholder:text-faint hover:border-rule-2 focus-visible:border-accent"
+                        },
+                        "actions": [
+                          {
+                            "type": "input",
+                            "handler": "setState",
+                            "params": {
+                              "target": "local",
+                              "guest_comment_author_name": "{{$event.target.value}}"
+                            }
+                          }
+                        ]
+                      },
+                      {
+                        "id": "guest_comment_password",
+                        "type": "basic",
+                        "name": "Input",
+                        "props": {
+                          "type": "password",
+                          "name": "password",
+                          "autoComplete": "new-password",
+                          "placeholder": "$t:community.post.guest_password_placeholder",
+                          "aria-label": "$t:community.post.guest_password_placeholder",
+                          "className": "h-11 w-full rounded-ctl border border-rule bg-paper px-3 text-[13px] text-ink transition-colors duration-150 placeholder:text-faint hover:border-rule-2 focus-visible:border-accent"
+                        },
+                        "actions": [
+                          {
+                            "type": "input",
+                            "handler": "setState",
+                            "params": {
+                              "target": "local",
+                              "guest_comment_password": "{{$event.target.value}}"
+                            }
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "id": "comment_input",
+                    "type": "basic",
+                    "name": "Textarea",
+                    "props": {
+                      "name": "content",
+                      "rows": 3,
+                      "placeholder": "$t:community.post.comment_placeholder",
+                      "aria-label": "$t:community.post.comment_placeholder",
+                      "value": "{{_local.new_comment_content ?? \"\"}}",
+                      "className": "min-h-[88px] w-full resize-y rounded-ctl border border-rule bg-paper px-3 py-2.5 text-[14px] leading-6 text-ink transition-colors duration-150 placeholder:text-faint hover:border-rule-2 focus-visible:border-accent"
+                    },
+                    "actions": [
+                      {
+                        "type": "input",
+                        "handler": "setState",
+                        "params": {
+                          "target": "local",
+                          "new_comment_content": "{{$event.target.value}}",
+                          "comment_error": ""
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "id": "comment_error",
+                    "type": "basic",
+                    "name": "Div",
+                    "props": {
+                      "role": "alert",
+                      "aria-live": "polite",
+                      "className": "mt-2 text-[12px] text-danger"
+                    },
+                    "if": "{{_local.comment_error}}",
+                    "text": "{{_local.comment_error ?? \"\"}}"
+                  },
+                  {
+                    "id": "comment_submit_row",
+                    "type": "basic",
+                    "name": "Div",
+                    "props": {
+                      "className": "mt-3 flex items-center justify-end"
+                    },
+                    "children": [
+                      {
+                        "id": "comment_submit",
+                        "type": "basic",
+                        "name": "Button",
+                        "props": {
+                          "type": "button",
+                          "className": "cursor-pointer rounded-ctl bg-accent px-4 py-2 text-[13px] font-semibold text-accent-ink transition-colors duration-150 hover:bg-accent-hover disabled:cursor-not-allowed disabled:opacity-40",
+                          "disabled": "{{_local.comment_submitting === true}}"
+                        },
+                        "actions": [
+                          {
+                            "type": "click",
+                            "handler": "sequence",
+                            "if": "{{_local.comment_submitting !== true && (_local.new_comment_content ?? '').trim() !== ''}}",
+                            "actions": [
+                              {
+                                "handler": "setState",
+                                "params": {
+                                  "target": "local",
+                                  "comment_submitting": true,
+                                  "comment_error": ""
+                                }
+                              },
+                              {
+                                "handler": "apiCall",
+                                 "auth_mode": "optional",
+                                "target": "/api/modules/sirsoft-board/boards/{{route.slug}}/posts/{{route.id}}/comments",
+                                "params": {
+                                  "method": "POST",
+                                  "body": {
+                                    "content": "{{_local.new_comment_content ?? ''}}",
+                                    "author_name": "{{_local.guest_comment_author_name ?? ''}}",
+                                    "password": "{{_local.guest_comment_password ?? ''}}"
+                                  }
+                                },
+                                "onSuccess": [
+                                  {
+                                    "handler": "setState",
+                                    "params": {
+                                      "target": "local",
+                                      "new_comment_content": "",
+                                      "guest_comment_author_name": "",
+                                      "guest_comment_password": "",
+                                      "comment_submitting": false,
+                                      "comment_error": ""
+                                    }
+                                  },
+                                  {
+                                    "handler": "refetchDataSource",
+                                    "params": {
+                                      "dataSourceId": "post"
+                                    }
+                                  }
+                                ],
+                                "onError": [
+                                  {
+                                    "handler": "setState",
+                                    "params": {
+                                      "target": "local",
+                                      "comment_submitting": false,
+                                      "comment_error": "{{error.message}}"
+                                    }
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ],
+                        "text": "$t:community.post.comment_submit"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

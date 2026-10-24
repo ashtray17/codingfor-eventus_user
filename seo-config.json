@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "description": "codingfor-community_user 템플릿 SEO 페이지 생성 설정",
+  "text_props": ["text", "label", "value", "title"],
+  "attr_map": {
+    "className": "class",
+    "htmlFor": "for"
+  },
+  "allowed_attrs": [
+    "class", "id", "href", "src", "alt", "title", "name", "type",
+    "placeholder", "for", "target", "rel", "width", "height",
+    "role", "aria-label", "aria-describedby", "aria-pressed", "style"
+  ],
+  "self_closing": ["img", "input", "hr", "br"],
+  "seo_overrides": {
+    "_global": {
+      "homeTab": ["latest", "popular"]
+    }
+  },
+  "render_modes": {
+    "html_content": {
+      "type": "raw",
+      "source": "$props_source"
+    }
+  },
+  "component_map": {
+    "Div": { "tag": "div" },
+    "Span": { "tag": "span" },
+    "H1": { "tag": "h1" },
+    "H2": { "tag": "h2" },
+    "H3": { "tag": "h3" },
+    "A": { "tag": "a" },
+    "Button": { "tag": "button" },
+    "Img": { "tag": "img" },
+    "Input": { "tag": "input" },
+    "Textarea": { "tag": "textarea" },
+    "HtmlContent": {
+      "tag": "div",
+      "render": "html_content",
+      "props_source": "content"
+    },
+    "ThemeToggle": {
+      "tag": "div",
+      "skip": true
+    }
+  }
+}

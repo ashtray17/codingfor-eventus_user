@@ -1,0 +1,313 @@
+/* Hallmark · genre: modern-minimal · macrostructure: Index-First · theme: Cobalt (adapted)
+ * enrichment: none — typography only · nav: N1b · footer: Ft2
+ * audience: 국내 테크 매니아 · use: 글 읽기 → 댓글 참여 · tone: utilitarian
+ * pre-emit critique: P5 H5 E5 S5 R5 V4
+ * contrast: pass (40–41) · slop: pass (42–45) · honest: pass (46) · chrome: pass (47) · tokens: pass (48) · responsive: pass (49) · icons: pass (30) · mobile: pass (34, 49, 50–57)
+ *
+ * Cobalt adapted for Hangul: Space Grotesk/Inter render no Hangul, so Wanted Sans
+ * (variable, self-hosted — public/css/wanted-sans.css loads Korean unicode-range
+ * subsets from public/fonts/wanted-sans/, wired via template.json assets.css)
+ * carries display + body (hierarchy by weight), JetBrains Mono is scoped to
+ * digits/dates/counts only — where it also buys tabular alignment.
+ * OFL-1.1 license: public/fonts/wanted-sans/OFL.txt.
+ */
+@import 'tailwindcss';
+
+/* Tailwind cannot see class names inside layout JSON. Scan them explicitly —
+ * this replaces the hand-maintained safelist pattern used elsewhere. */
+@source '../../layouts/**/*.json';
+@source '../../components.json';
+@source '../**/*.tsx';
+
+@theme {
+  /* Paper — cool engineered near-white. Never #fff. */
+  --color-paper:         oklch(98.5% 0.004 250);
+  --color-paper-2:       oklch(96.8% 0.005 252);
+  --color-paper-3:       oklch(94.2% 0.006 252);
+
+  /* Ink — cool charcoal. Never #000. */
+  --color-ink:           oklch(24% 0.020 258);
+  --color-ink-2:         oklch(34% 0.018 257);
+  --color-muted:         oklch(45% 0.018 256);
+  --color-faint:         oklch(48% 0.015 254);
+
+  /* Hairlines do the structural work — no cards, no shadows. */
+  --color-rule:          oklch(90.5% 0.008 252);
+  --color-rule-2:        oklch(83.0% 0.010 254);
+
+  /* Exactly one signal, under 5% of any viewport. */
+  --color-accent:        oklch(58% 0.20 256);
+  --color-accent-hover:  oklch(51% 0.20 256);
+  --color-accent-ink:    oklch(99% 0.002 250);
+  --color-accent-wash:   oklch(95.5% 0.033 256);
+
+  /* Semantic danger tokens for form and upload errors. */
+  --color-danger:        oklch(48% 0.19 25);
+  --color-danger-wash:   oklch(96% 0.025 25);
+  --color-danger-border: oklch(84% 0.07 25);
+
+  /* The page's one dark beat. */
+  --color-graphite:      oklch(22% 0.016 260);
+  --color-graphite-2:    oklch(28% 0.016 260);
+  --color-graphite-ink:  oklch(88% 0.010 254);
+
+  /* Drawn with a ruler — Event-us style clean 10px controls and 16px cards. */
+  --radius-ctl:  10px;
+  --radius-card: 16px;
+
+  --font-sans: 'Wanted Sans Variable', 'Wanted Sans', Pretendard, -apple-system,
+               BlinkMacSystemFont, system-ui, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  /* Semantic spacing tokens — mirrors Tailwind default scale (4px base) for
+   * machine-verifiable consistency across layout JSON and component styles. */
+  --space-1: 0.25rem;    /*  4px — tight inline gaps */
+  --space-2: 0.5rem;     /*  8px — compact padding */
+  --space-3: 0.75rem;    /* 12px — list-item vertical rhythm */
+  --space-4: 1rem;       /* 16px — section padding */
+  --space-5: 1.25rem;    /* 20px — card internal padding */
+  --space-6: 1.5rem;     /* 24px — body text line-box */
+  --space-8: 2rem;       /* 32px — major section gaps */
+  --space-10: 2.5rem;    /* 40px — lg breakpoint gaps */
+}
+
+/* Class-based dark variant (html.dark) — same convention as the G7 admin. */
+@custom-variant dark (&:where(.dark, .dark *));
+
+@layer base {
+  html, body { overflow-x: clip; }
+
+  /* Dark theme — the same Cobalt ramp with inverted luminance. Every token is
+   * overridden on html.dark so utilities pick the dark values via var() without
+   * per-element dark: classes. Follows the G7 admin `html.dark` convention. */
+  html.dark {
+    color-scheme: dark;
+
+    --color-paper:         oklch(17.0% 0.015 258);
+    --color-paper-2:       oklch(20.5% 0.016 258);
+    --color-paper-3:       oklch(24.5% 0.017 258);
+
+    --color-ink:           oklch(93.0% 0.006 250);
+    --color-ink-2:         oklch(85.0% 0.008 250);
+    --color-muted:         oklch(74.0% 0.015 255);
+    --color-faint:         oklch(66.0% 0.015 255);
+
+    --color-rule:          oklch(27.0% 0.014 256);
+    --color-rule-2:        oklch(34.0% 0.016 256);
+
+    --color-accent:        oklch(70.0% 0.170 256);
+    --color-accent-hover:  oklch(78.0% 0.150 256);
+    --color-accent-ink:    oklch(18.0% 0.020 258);
+    --color-accent-wash:   oklch(28.0% 0.060 256);
+
+    --color-danger:        oklch(76.0% 0.150 25);
+    --color-danger-wash:   oklch(25.0% 0.050 25);
+    --color-danger-border: oklch(38.0% 0.090 25);
+
+    /* Invert the page's one beat — dark mode gets a light beat. */
+    --color-graphite:      oklch(92.0% 0.006 250);
+    --color-graphite-2:    oklch(96.0% 0.004 250);
+    --color-graphite-ink:  oklch(24.0% 0.020 258);
+  }
+
+  body {
+    background: var(--color-paper);
+    color: var(--color-ink-2);
+    font-family: var(--font-sans);
+    font-size: 15px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    word-break: keep-all;      /* Hangul wraps on word boundaries, not mid-word */
+  }
+
+  /* Monospace elements use JetBrains Mono for code, counts, and numbers. */
+  pre, code, kbd, samp { font-family: var(--font-mono); }
+
+  /* Display type is roman, tight-set, and never italic. */
+  h1, h2, h3 {
+    color: var(--color-ink);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.25;
+    overflow-wrap: anywhere;
+    min-width: 0;
+  }
+
+  /* Counts, dates, and view tallies align in columns. */
+  :where(.tnum) { font-variant-numeric: tabular-nums; }
+
+  input, textarea, select {
+    outline: 2px solid transparent;
+    outline-offset: 1px;
+  }
+
+  button:not(:disabled):active {
+    transform: translateY(1px);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+    border-radius: 10px;
+  }
+
+  ::placeholder { color: var(--color-faint); }
+}
+
+@layer components {
+  /* Board strip on mobile scrolls horizontally without a visible scrollbar. */
+  .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+  .scrollbar-hide::-webkit-scrollbar { display: none; }
+
+  #home_gallery_track img,
+  #home_gallery_track a {
+    -webkit-user-drag: none;
+    user-select: none;
+  }
+  #home_gallery_track img { pointer-events: none; }
+
+  /* Cobalt's link move: a signal underline that grows from the left.
+   * Transitions only transform — never `all`, never a layout property. */
+  .navlink { position: relative; }
+  .navlink::after {
+    content: '';
+    position: absolute;
+    left: 0; right: 0; bottom: -1px;
+    height: 2px;
+    background: var(--color-accent);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 180ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .navlink:hover::after,
+  .navlink:focus-visible::after,
+  .navlink[data-active='true']::after { transform: scaleX(1); }
+
+  /* Titles clamp to two lines in dense rows. */
+  .clamp-2 {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+  }
+
+  /* Sanitized rich content (HtmlContent) — scoped element styles for CKEditor
+   * payloads. Tailwind never scans innerHTML, so these are the only styles
+   * applied inside the post body. Cobalt tokens only. */
+  .rich-html > *:first-child { margin-top: 0; }
+  .rich-html > *:last-child { margin-bottom: 0; }
+  .rich-html h1,
+  .rich-html h2,
+  .rich-html h3 {
+    margin: 1.5em 0 0.6em;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.25;
+  }
+  .rich-html h1 { font-size: 1.35em; }
+  .rich-html h2 { font-size: 1.2em; }
+  .rich-html h3 { font-size: 1.05em; }
+  .rich-html p { margin: 0 0 1em; }
+  .rich-html ul,
+  .rich-html ol { margin: 0 0 1em; padding-left: 1.4em; }
+  .rich-html ul { list-style: disc; }
+  .rich-html ol { list-style: decimal; }
+  .rich-html li { margin: 0.3em 0; }
+  .rich-html a {
+    color: var(--color-accent);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-thickness: 1px;
+  }
+  .rich-html a:hover { color: var(--color-accent-hover); }
+  .rich-html blockquote {
+    margin: 0 0 1em;
+    padding: 0.35em 0 0.35em 1em;
+    border-left: 3px solid var(--color-rule-2);
+    color: var(--color-muted);
+  }
+  .rich-html code {
+    font-family: var(--font-mono);
+    font-size: 0.875em;
+    background: var(--color-paper-3);
+    padding: 0.15em 0.4em;
+    border-radius: 6px;
+  }
+  .rich-html pre {
+    font-family: var(--font-mono);
+    margin: 0 0 1em;
+    padding: 0.9em 1em;
+    background: var(--color-paper-3);
+    border: 1px solid var(--color-rule);
+    border-radius: var(--radius-ctl);
+    max-width: 100%;
+    overflow-x: auto;
+    font-size: 13px;
+    line-height: 1.6;
+  }
+  .rich-html pre code {
+    background: none;
+    padding: 0;
+    border-radius: 0;
+    font-family: inherit;
+    font-size: inherit;
+  }
+  .rich-html hr {
+    margin: 1.5em 0;
+    border: 0;
+    border-top: 1px solid var(--color-rule);
+  }
+  .rich-html table {
+    width: 100%;
+    margin: 0 0 1em;
+    border-collapse: collapse;
+    font-size: 0.95em;
+  }
+  .rich-html th,
+  .rich-html td {
+    padding: 0.5em 0.75em;
+    border: 1px solid var(--color-rule);
+    text-align: left;
+    vertical-align: top;
+  }
+  .rich-html th { background: var(--color-paper-3); font-weight: 600; }
+  .rich-html img {
+    max-width: 100%;
+    height: auto;
+    border-radius: var(--radius-ctl);
+  }
+  .rich-html figure { margin: 0 0 1em; }
+  .rich-html figcaption {
+    margin-top: 0.4em;
+    font-size: 12px;
+    color: var(--color-muted);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+    .navlink::after { transition: none; }
+    button:not(:disabled):active { transform: none; }
+  }
+
+  /* Empty-state hint — readable even at the faintest tier. */
+  .empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 2.5rem 1rem;
+    text-align: center;
+  }
+  .empty-state p {
+    color: var(--color-muted);
+    font-size: 0.875rem;
+    line-height: 1.5;
+  }
+}

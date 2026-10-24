@@ -1,0 +1,305 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "templateId": "codingfor-community_user",
+    "version": "0.18.2",
+    "components": {
+        "basic": [
+            {
+                "name": "Div",
+                "type": "basic",
+                "description": "HTML div element wrapper",
+                "path": "src/components/basic/Div.tsx",
+                "props": {
+                    "className": {
+                        "type": "string",
+                        "required": false,
+                        "description": "사용자 정의 클래스"
+                    }
+                }
+            },
+            {
+                "name": "Button",
+                "type": "basic",
+                "description": "HTML button element wrapper",
+                "path": "src/components/basic/Button.tsx",
+                "props": {
+                    "className": {
+                        "type": "string",
+                        "required": false,
+                        "description": "사용자 정의 클래스"
+                    }
+                }
+            },
+            {
+                "name": "H1",
+                "type": "basic",
+                "description": "HTML h1 element wrapper",
+                "path": "src/components/basic/H1.tsx",
+                "props": {
+                    "className": {
+                        "type": "string",
+                        "required": false,
+                        "description": "사용자 정의 클래스"
+                    }
+                }
+            },
+            {
+                "name": "H2",
+                "type": "basic",
+                "description": "HTML h2 element wrapper",
+                "path": "src/components/basic/H2.tsx",
+                "props": {
+                    "className": {
+                        "type": "string",
+                        "required": false,
+                        "description": "사용자 정의 클래스"
+                    }
+                }
+            },
+            {
+                "name": "H3",
+                "type": "basic",
+                "description": "HTML h3 element wrapper",
+                "path": "src/components/basic/H3.tsx",
+                "props": {
+                    "className": {
+                        "type": "string",
+                        "required": false,
+                        "description": "사용자 정의 클래스"
+                    }
+                }
+            },
+            {
+                "name": "A",
+                "type": "basic",
+                "description": "HTML a element wrapper",
+                "path": "src/components/basic/A.tsx",
+                "props": {
+                    "href": {
+                        "type": "string",
+                        "required": false,
+                        "description": "링크 URL"
+                    },
+                    "className": {
+                        "type": "string",
+                        "required": false,
+                        "description": "사용자 정의 클래스"
+                    }
+                }
+            },
+            {
+                "name": "Span",
+                "type": "basic",
+                "description": "HTML span element wrapper",
+                "path": "src/components/basic/Span.tsx",
+                "props": {
+                    "className": {
+                        "type": "string",
+                        "required": false,
+                        "description": "사용자 정의 클래스"
+                    }
+                }
+            },
+            {
+                "name": "Img",
+                "type": "basic",
+                "description": "HTML img element wrapper",
+                "path": "src/components/basic/Img.tsx",
+                "props": {
+                    "src": {
+                        "type": "string",
+                        "required": true,
+                        "description": "이미지 URL"
+                    },
+                    "alt": {
+                        "type": "string",
+                        "required": false,
+                        "description": "대체 텍스트"
+                    },
+                    "className": {
+                        "type": "string",
+                        "required": false,
+                        "description": "사용자 정의 클래스"
+                    }
+                }
+            },
+            {
+                "name": "Input",
+                "type": "basic",
+                "description": "HTML input element wrapper",
+                "path": "src/components/basic/Input.tsx",
+                "props": {
+                    "type": {
+                        "type": "string",
+                        "required": false,
+                        "description": "입력 필드 유형"
+                    },
+                    "value": {
+                        "type": "string",
+                        "required": false,
+                        "description": "입력값"
+                    },
+                    "placeholder": {
+                        "type": "string",
+                        "required": false,
+                        "description": "플레이스홀더"
+                    },
+                    "className": {
+                        "type": "string",
+                        "required": false,
+                        "description": "사용자 정의 클래스"
+                    }
+                }
+            },
+            {
+                "name": "Textarea",
+                "type": "basic",
+                "description": "HTML textarea element wrapper",
+                "path": "src/components/basic/Textarea.tsx",
+                "props": {
+                    "value": {
+                        "type": "string",
+                        "required": false,
+                        "description": "입력값"
+                    },
+                    "placeholder": {
+                        "type": "string",
+                        "required": false,
+                        "description": "플레이스홀더"
+                    },
+                    "rows": {
+                        "type": "number",
+                        "required": false,
+                        "description": "표시 행 수"
+                    },
+                    "className": {
+                        "type": "string",
+                        "required": false,
+                        "description": "사용자 정의 클래스"
+                    }
+                }
+            }
+        ],
+        "composite": [
+            {
+                "name": "ThemeToggle",
+                "type": "composite",
+                "description": "다크 모드 전환 버튼 (html.dark 토글 + localStorage 저장)",
+                "path": "src/components/common/ThemeToggle.tsx",
+                "props": {
+                    "ariaLabel": {
+                        "type": "string",
+                        "required": false,
+                        "description": "스크린 리더용 라벨 ($t: 키)"
+                    },
+                    "className": {
+                        "type": "string",
+                        "required": false,
+                        "description": "사용자 정의 클래스"
+                    }
+                }
+            },
+            {
+                "name": "HtmlContent",
+                "type": "composite",
+                "description": "서버 콘텐츠를 DOMPurify로 정화하여 HTML/텍스트 렌더링 (게시글 본문 등)",
+                "path": "src/components/composite/HtmlContent.tsx",
+                "props": {
+                    "content": {
+                        "type": "string",
+                        "required": false,
+                        "description": "표시할 콘텐츠 (HTML 또는 일반 텍스트)"
+                    },
+                    "text": {
+                        "type": "string",
+                        "required": false,
+                        "description": "레이아웃 JSON text 속성으로 전달되는 콘텐츠 (content보다 우선)"
+                    },
+                    "isHtml": {
+                        "type": "boolean",
+                        "required": false,
+                        "default": true,
+                        "description": "HTML 렌더링 여부 (false면 일반 텍스트)"
+                    },
+                    "purifyConfig": {
+                        "type": "object",
+                        "required": false,
+                        "description": "DOMPurify 설정 오버라이드"
+                    },
+                    "className": {
+                        "type": "string",
+                        "required": false,
+                        "description": "사용자 정의 클래스"
+                    }
+                }
+            },
+            {
+                "name": "ImageUploader",
+                "type": "composite",
+                "description": "이미지를 대량 업로드하고 Embed 코드를 발급하는 이미지 업로더",
+                "path": "src/components/composite/ImageUploader.tsx",
+                "props": {
+                    "uploadEndpoint": {
+                        "type": "string",
+                        "required": false,
+                        "description": "업로드 API 경로"
+                    },
+                    "listEndpoint": {
+                        "type": "string",
+                        "required": false,
+                        "description": "내 이미지 목록 API 경로"
+                    },
+                    "statusBase": {
+                        "type": "string",
+                        "required": false,
+                        "description": "상태·삭제 API 기본 경로"
+                    },
+                    "batchStatusEndpoint": {
+                        "type": "string",
+                        "required": false,
+                        "description": "여러 자산 상태 API 경로"
+                    },
+                    "beginUploadEndpoint": {
+                        "type": "string",
+                        "required": false,
+                        "description": "대용량 업로드 시작 API 경로"
+                    },
+                    "chunkEndpointBase": {
+                        "type": "string",
+                        "required": false,
+                        "description": "대용량 업로드 조각 API 기본 경로"
+                    },
+                    "completeEndpointBase": {
+                        "type": "string",
+                        "required": false,
+                        "description": "대용량 업로드 완료 API 기본 경로"
+                    },
+                    "maxSizeMb": {
+                        "type": "number",
+                        "required": false,
+                        "default": 50,
+                        "description": "클라이언트 최대 파일 크기(MB)"
+                    },
+                    "memberMaxSizeMb": {
+                        "type": "number",
+                        "required": false,
+                        "default": 250,
+                        "description": "로그인 사용자의 이미지 최대 파일 크기(MB)"
+                    },
+                    "chunkSizeMb": {
+                        "type": "number",
+                        "required": false,
+                        "default": 16,
+                        "description": "대용량 업로드 조각 크기(MB)"
+                    },
+                    "className": {
+                        "type": "string",
+                        "required": false,
+                        "description": "사용자 정의 클래스"
+                    }
+                }
+            }
+        ],
+        "layout": []
+    }
+}

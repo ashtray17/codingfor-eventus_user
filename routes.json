@@ -1,0 +1,132 @@
+{
+    "version": "1.0.0",
+    "description": "codingfor-community_user 사용자 템플릿 라우트 정의 (커뮤니티/게시판 중심)",
+    "routes": [
+        {
+            "_comment": "=== 커뮤니티 홈 (최신 글 / 게시판 카테고리) ===",
+            "path": "/",
+            "layout": "home",
+            "auth_required": false,
+            "meta": {
+                "title": "$t:community.home.page_title"
+            }
+        },
+        {
+            "_comment": "=== 사용자 로그인 ===",
+            "path": "/login",
+            "layout": "login",
+            "auth_required": false,
+            "guest_only": true,
+            "meta": {
+                "title": "$t:community.login.page_title"
+            }
+        },
+        {
+            "_comment": "=== 회원가입 ===",
+            "path": "/register",
+            "layout": "register",
+            "auth_required": false,
+            "guest_only": true,
+            "meta": {
+                "title": "$t:community.register.page_title"
+            }
+        },
+        {
+            "path": "/forgot-password",
+            "layout": "forgot-password",
+            "auth_required": false,
+            "guest_only": true,
+            "meta": {
+                "title": "$t:community.forgot.page_title"
+            }
+        },
+        {
+            "path": "/reset-password",
+            "layout": "reset-password",
+            "auth_required": false,
+            "guest_only": true,
+            "meta": {
+                "title": "$t:community.reset.page_title"
+            }
+        },
+        {
+            "_comment": "=== 게시판별 게시글 목록 ===",
+            "path": "/board/:slug",
+            "layout": "board",
+            "auth_required": false,
+            "meta": {
+                "title": "$t:community.board.page_title"
+            }
+        },
+        {
+            "_comment": "=== 게시글 작성 (/board/:slug/:id 보다 먼저 정의) — 회원 전용 ===",
+            "path": "/board/:slug/write",
+            "layout": "write",
+            "auth_required": true,
+            "meta": {
+                "title": "$t:community.write.page_title"
+            }
+        },
+        {
+            "_comment": "=== 게시글 보기 (board slug + post id) ===",
+            "path": "/board/:slug/:id",
+            "layout": "post",
+            "auth_required": false,
+            "meta": {
+                "title": "$t:community.post.page_title"
+            }
+        },
+        {
+            "_comment": "=== 게시글 수정 — 회원 전용 ===",
+            "path": "/board/:slug/:id/edit",
+            "layout": "write",
+            "auth_required": true,
+            "meta": {
+                "title": "$t:community.write.edit_page_title"
+            }
+        },
+        {
+            "_comment": "=== 게시글 검색 ===",
+            "path": "/search",
+            "layout": "search",
+            "auth_required": false,
+            "meta": {
+                "title": "$t:community.search.page_title"
+            }
+        },
+        {
+            "_comment": "=== 마이페이지 ===",
+            "path": "/mypage",
+            "layout": "mypage",
+            "auth_required": true,
+            "meta": {
+                "title": "$t:community.mypage.page_title"
+            }
+        },
+        {
+            "path": "/mypage/edit",
+            "layout": "mypage-edit",
+            "auth_required": true,
+            "meta": {
+                "title": "$t:community.mypage.edit_page_title"
+            }
+        },
+        {
+            "path": "/mypage/password",
+            "layout": "mypage-password",
+            "auth_required": true,
+            "meta": {
+                "title": "$t:community.mypage.password_page_title"
+            }
+        },
+        {
+            "_comment": "=== 직접 URL 전용 이미지 Embed 호스팅 ===",
+            "path": "/photo",
+            "layout": "images",
+            "auth_required": false,
+            "meta": {
+                "title": "$t:community.images.page_title"
+            }
+        }
+    ]
+}

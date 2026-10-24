@@ -1,0 +1,901 @@
+{
+  "version": "1.0.0",
+  "layout_name": "_user_base",
+  "meta": {
+    "title": "$t:community.base_layout_title",
+    "description": "$t:community.base_layout_description",
+    "is_base": true,
+    "seo": {
+      "enabled": false,
+      "data_sources": ["boards"],
+      "vars": {
+        "site_name": "$core_settings:general.site_name"
+      },
+      "og": {
+        "type": "website"
+      }
+    }
+  },
+  "data_sources": [
+    {
+      "id": "boards",
+      "label_key": "$t:community.data_source.boards",
+      "type": "api",
+      "endpoint": "/api/modules/sirsoft-board/boards/board-menu",
+      "method": "GET",
+      "auto_fetch": true,
+      "auth_mode": "optional",
+      "loading_strategy": "progressive",
+      "fallback": {
+        "data": []
+      },
+      "errorHandling": {
+        "401": {
+          "handler": "suppress"
+        },
+        "403": {
+          "handler": "suppress"
+        },
+        "404": {
+          "handler": "suppress"
+        }
+      }
+    },
+    {
+      "id": "current_user",
+      "label_key": "$t:community.data_source.current_user",
+      "type": "api",
+      "endpoint": "/api/auth/user",
+      "method": "GET",
+      "auto_fetch": true,
+      "auth_mode": "optional",
+      "loading_strategy": "progressive",
+      "initGlobal": "currentUser",
+      "fallback": {
+        "data": null
+      },
+      "errorHandling": {
+        "401": {
+          "handler": "suppress"
+        },
+        "403": {
+          "handler": "suppress"
+        }
+      }
+    },
+    {
+      "id": "sidebar_notice",
+      "label_key": "$t:community.data_source.sidebar_notice",
+      "type": "api",
+      "endpoint": "/api/modules/sirsoft-board/boards/notice/posts",
+      "method": "GET",
+      "auto_fetch": true,
+      "auth_mode": "optional",
+      "loading_strategy": "progressive",
+      "params": {
+        "per_page": 5
+      },
+      "fallback": {
+        "data": {
+          "data": []
+        }
+      },
+      "errorHandling": {
+        "401": {
+          "handler": "suppress"
+        },
+        "403": {
+          "handler": "suppress"
+        },
+        "404": {
+          "handler": "suppress"
+        }
+      }
+    },
+    {
+      "id": "sidebar_column",
+      "label_key": "$t:community.data_source.sidebar_column",
+      "type": "api",
+      "endpoint": "/api/modules/sirsoft-board/boards/baseball/posts",
+      "method": "GET",
+      "auto_fetch": true,
+      "auth_mode": "optional",
+      "loading_strategy": "progressive",
+      "params": {
+        "category": "칼럼",
+        "per_page": 5
+      },
+      "fallback": {
+        "data": {
+          "data": []
+        }
+      },
+      "errorHandling": {
+        "401": {
+          "handler": "suppress"
+        },
+        "403": {
+          "handler": "suppress"
+        },
+        "404": {
+          "handler": "suppress"
+        }
+      }
+    }
+  ],
+  "components": [
+    {
+      "comment": "=== Index-First shell · Cobalt · hairlines carry all structure ===",
+      "id": "community_root",
+      "type": "basic",
+      "name": "Div",
+      "props": {
+        "className": "flex min-h-screen flex-col bg-paper text-ink-2"
+      },
+      "children": [
+        {
+          "comment": "=== N1b three-section bar: wordmark | boards | search + auth ===",
+          "id": "site_header",
+          "type": "basic",
+          "name": "Div",
+          "props": {
+            "className": "sticky top-0 z-30 border-b border-rule bg-paper/85 backdrop-blur-md"
+          },
+          "children": [
+            {
+              "id": "site_header_inner",
+              "type": "basic",
+              "name": "Div",
+              "props": {
+                "className": "mx-auto flex h-14 w-full max-w-[1240px] items-center gap-4 px-4 md:px-6"
+              },
+              "children": [
+                {
+                  "id": "site_logo",
+                  "type": "basic",
+                  "name": "A",
+                  "props": {
+                    "href": "/",
+                    "aria-label": "{{_global.settings?.general?.site_name ?? 'Site'}}",
+                    "className": "flex shrink-0 items-center"
+                  },
+                  "children": [
+                    {
+                      "id": "site_logo_img",
+                      "type": "basic",
+                      "name": "Img",
+                      "if": "{{_global.settings?.general?.site_logo_url}}",
+                      "props": {
+                        "src": "{{_global.settings?.general?.site_logo_url}}",
+                        "alt": "{{_global.settings?.general?.site_name ?? 'Site'}}",
+                        "className": "h-8 w-auto max-w-[148px] object-contain object-left"
+                      }
+                    },
+                    {
+                      "id": "site_logo_text",
+                      "type": "basic",
+                      "name": "Span",
+                      "if": "{{!_global.settings?.general?.site_logo_url}}",
+                      "props": {
+                        "className": "text-[15px] font-semibold tracking-[-0.02em] text-ink"
+                      },
+                      "text": "{{_global.settings?.general?.site_name ?? 'Site'}}"
+                    }
+                  ]
+                },
+                {
+                  "comment": "desktop inline search bar — Event-us central/right search feel",
+                  "id": "primary_nav",
+                  "type": "basic",
+                  "name": "Div",
+                  "props": {
+                    "className": "hidden min-w-0 flex-1 items-center pl-4 lg:flex"
+                  },
+                  "children": [
+                    {
+                      "comment": "plain search input — Enter submits to /search",
+                      "id": "header_search",
+                      "type": "basic",
+                      "name": "Input",
+                      "props": {
+                        "type": "search",
+                        "name": "q",
+                        "placeholder": "$t:community.header.search_placeholder",
+                        "aria-label": "$t:community.header.search_placeholder",
+                        "value": "{{_local.header_q ?? query.q ?? \"\"}}",
+                        "className": "h-11 w-full max-w-md rounded-ctl border border-rule bg-paper-2 px-3.5 text-[13px] text-ink transition-colors duration-150 placeholder:text-faint hover:border-rule-2 focus-visible:border-accent"
+                      },
+                      "actions": [
+                        {
+                          "type": "input",
+                          "handler": "setState",
+                          "params": {
+                            "target": "local",
+                            "header_q": "{{$event.target.value}}"
+                          }
+                        },
+                        {
+                          "type": "keydown",
+                          "key": "Enter",
+                          "handler": "navigate",
+                          "params": {
+                            "path": "/search",
+                            "query": {
+                              "q": "{{$event.target.value}}",
+                              "page": 1
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "id": "header_right",
+                  "type": "basic",
+                  "name": "Div",
+                  "props": {
+                    "className": "ml-auto flex shrink-0 items-center gap-2"
+                  },
+                  "children": [
+                    {
+                      "id": "theme_toggle",
+                      "type": "basic",
+                      "name": "Button",
+                      "props": {
+                        "type": "button",
+                        "aria-label": "$t:community.theme.toggle",
+                        "title": "$t:community.theme.toggle",
+                        "className": "flex h-11 w-11 cursor-pointer items-center justify-center rounded-ctl border border-rule text-[15px] leading-none text-muted transition-colors duration-150 hover:border-rule-2 hover:text-ink"
+                      },
+                      "actions": [
+                        {
+                          "type": "click",
+                          "handler": "toggleTheme"
+                        }
+                      ],
+                      "children": [
+                        {
+                          "id": "theme_toggle_moon",
+                          "type": "basic",
+                          "name": "Span",
+                          "props": {
+                            "className": "dark:hidden"
+                          },
+                          "text": "☾"
+                        },
+                        {
+                          "id": "theme_toggle_sun",
+                          "type": "basic",
+                          "name": "Span",
+                          "props": {
+                            "className": "hidden dark:inline"
+                          },
+                          "text": "☀"
+                        }
+                      ]
+                    },
+                    {
+                      "id": "menu_register",
+                      "type": "basic",
+                      "name": "A",
+                      "props": {
+                        "href": "/register",
+                        "className": "h-11 rounded-ctl px-2 text-[13px] font-medium leading-[44px] whitespace-nowrap text-muted transition-colors duration-150 hover:text-ink"
+                      },
+                      "if": "{{!_global.currentUser?.uuid}}",
+                      "text": "$t:community.user.register"
+                    },
+                    {
+                      "id": "menu_login",
+                      "type": "basic",
+                      "name": "A",
+                      "props": {
+                        "href": "/login",
+                        "className": "h-11 rounded-ctl bg-accent px-3.5 text-[13px] font-semibold leading-[44px] whitespace-nowrap text-accent-ink transition-colors duration-150 hover:bg-accent-hover"
+                      },
+                      "if": "{{!_global.currentUser?.uuid}}",
+                      "text": "$t:community.user.login"
+                    },
+                    {
+                      "id": "menu_user_name",
+                      "type": "basic",
+                      "name": "A",
+                      "props": {
+                        "href": "/mypage",
+                        "className": "hidden max-w-32 truncate text-[13px] font-medium text-ink hover:text-accent sm:block"
+                      },
+                      "if": "{{_global.currentUser?.uuid}}",
+                      "text": "{{_global.currentUser?.name ?? \"-\"}}"
+                    },
+                    {
+                      "id": "menu_logout",
+                      "type": "basic",
+                      "name": "Button",
+                      "if": "{{_global.currentUser?.uuid}}",
+                      "props": {
+                        "type": "button",
+                        "className": "h-11 cursor-pointer rounded-ctl border border-rule px-3 text-[13px] font-medium whitespace-nowrap text-muted transition-colors duration-150 hover:border-rule-2 hover:text-ink"
+                      },
+                      "actions": [
+                        {
+                          "type": "click",
+                          "handler": "logout"
+                        }
+                      ],
+                      "text": "$t:community.user.logout"
+                    },
+                    {
+                      "comment": "Event-us HostCenter style soft-wash pill button",
+                      "id": "header_photo_host",
+                      "type": "basic",
+                      "name": "A",
+                      "props": {
+                        "href": "/photo",
+                        "className": "hidden h-11 items-center rounded-ctl bg-accent-wash px-3 text-[12px] font-semibold whitespace-nowrap text-accent transition-colors duration-150 hover:bg-accent hover:text-accent-ink sm:inline-flex"
+                      },
+                      "text": "$t:community.header.photo_host"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "comment": "Event-us style mobile full-width search bar",
+              "id": "mobile_search_bar",
+              "type": "basic",
+              "name": "Div",
+              "props": {
+                "className": "mx-auto w-full max-w-[1240px] px-4 pb-2.5 lg:hidden"
+              },
+              "children": [
+                {
+                  "id": "header_search_mobile_input",
+                  "type": "basic",
+                  "name": "Input",
+                  "props": {
+                    "type": "search",
+                    "name": "q_mobile",
+                    "placeholder": "$t:community.header.search_placeholder",
+                    "aria-label": "$t:community.header.search_placeholder",
+                    "value": "{{_local.header_q ?? query.q ?? \"\"}}",
+                    "className": "h-11 w-full rounded-ctl border border-rule bg-paper-2 px-3.5 text-[13px] text-ink transition-colors duration-150 placeholder:text-faint hover:border-rule-2 focus-visible:border-accent"
+                  },
+                  "actions": [
+                    {
+                      "type": "input",
+                      "handler": "setState",
+                      "params": {
+                        "target": "local",
+                        "header_q": "{{$event.target.value}}"
+                      }
+                    },
+                    {
+                      "type": "keydown",
+                      "key": "Enter",
+                      "handler": "navigate",
+                      "params": {
+                        "path": "/search",
+                        "query": {
+                          "q": "{{$event.target.value}}",
+                          "page": 1
+                        }
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "comment": "Event-us 2nd-tier category ribbon bar — works on both mobile and desktop",
+              "id": "mobile_board_strip",
+              "type": "basic",
+              "name": "Div",
+              "props": {
+                "className": "border-t border-rule bg-paper"
+              },
+              "children": [
+                {
+                  "id": "category_ribbon_inner",
+                  "type": "basic",
+                  "name": "Div",
+                  "props": {
+                    "className": "scrollbar-hide mx-auto flex h-12 w-full max-w-[1240px] items-center gap-1.5 overflow-x-auto px-4 md:px-6"
+                  },
+                  "children": [
+                    {
+                      "id": "category_ribbon_badge",
+                      "type": "basic",
+                      "name": "Span",
+                      "props": {
+                        "className": "hidden shrink-0 items-center rounded-ctl bg-paper-3 px-2.5 py-1 text-[12px] font-semibold text-ink sm:inline-flex"
+                      },
+                      "text": "$t:community.header.category_label"
+                    },
+                    {
+                      "id": "category_ribbon_div_1",
+                      "type": "basic",
+                      "name": "Span",
+                      "props": {
+                        "className": "hidden px-1 text-[12px] text-rule-2 sm:inline"
+                      },
+                      "text": "|"
+                    },
+                    {
+                      "id": "nav_board_{{board.slug}}",
+                      "type": "basic",
+                      "name": "A",
+                      "iteration": {
+                        "source": "{{boards?.data ?? []}}",
+                        "item_var": "board"
+                      },
+                      "props": {
+                        "href": "/board/{{board.slug}}",
+                        "className": "navlink shrink-0 rounded-ctl px-3 py-1.5 text-[13px] font-medium whitespace-nowrap text-ink-2 transition-colors duration-150 hover:bg-accent-wash hover:text-accent"
+                      },
+                      "text": "{{board?.name ?? \"\"}}"
+                    },
+                    {
+                      "id": "category_ribbon_div_2",
+                      "type": "basic",
+                      "name": "Span",
+                      "props": {
+                        "className": "ml-auto px-1 text-[12px] text-rule-2"
+                      },
+                      "text": "|"
+                    },
+                    {
+                      "id": "category_ribbon_photo_cta",
+                      "type": "basic",
+                      "name": "A",
+                      "props": {
+                        "href": "/photo",
+                        "className": "shrink-0 px-2 py-1.5 text-[13px] font-bold whitespace-nowrap text-accent transition-colors duration-150 hover:text-accent-hover"
+                      },
+                      "text": "$t:community.header.photo_host"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "body_wrapper",
+          "type": "basic",
+          "name": "Div",
+          "props": {
+            "className": "mx-auto flex w-full max-w-[1240px] flex-1 flex-col gap-8 px-4 py-6 md:px-6 lg:flex-row lg:gap-10"
+          },
+          "children": [
+            {
+              "id": "main_content_area",
+              "type": "basic",
+              "name": "Div",
+              "props": {
+                "className": "min-w-0 flex-1"
+              },
+              "children": [
+                {
+                  "id": "main_content",
+                  "type": "basic",
+                  "name": "Div",
+                  "slot": "content",
+                  "props": {
+                    "className": ""
+                  },
+                  "children": []
+                }
+              ]
+            },
+            {
+              "comment": "=== sidebar: hairline sections, zero cards ===",
+              "id": "sidebar",
+              "type": "basic",
+              "name": "Div",
+              "props": {
+                "className": "hidden w-[268px] shrink-0 lg:block"
+              },
+              "children": [
+                {
+                  "id": "guest_login_box",
+                  "type": "basic",
+                  "name": "Div",
+                  "if": "{{!_global.currentUser?.uuid}}",
+                  "props": {
+                    "className": "mb-8 rounded-card border border-rule bg-paper-2 p-4"
+                  },
+                  "children": [
+                    {
+                      "id": "guest_login_title",
+                      "type": "basic",
+                      "name": "H3",
+                      "props": {
+                        "className": "text-[14px] font-semibold text-ink"
+                      },
+                      "text": "$t:community.sidebar.guest_title"
+                    },
+                    {
+                      "id": "guest_login_description",
+                      "type": "basic",
+                      "name": "Span",
+                      "props": {
+                        "className": "mt-1 block text-[12px] leading-5 text-muted"
+                      },
+                      "text": "$t:community.sidebar.guest_description"
+                    },
+                    {
+                      "id": "guest_login_link",
+                      "type": "basic",
+                      "name": "A",
+                      "props": {
+                        "href": "/login",
+                        "className": "mt-3 block rounded-ctl bg-accent px-3 py-2 text-center text-[13px] font-semibold text-accent-ink transition-colors duration-150 hover:bg-accent-hover"
+                      },
+                      "text": "$t:community.user.login"
+                    },
+                    {
+                      "id": "guest_register_link",
+                      "type": "basic",
+                      "name": "A",
+                      "props": {
+                        "href": "/register",
+                        "className": "mt-2 block text-center text-[12px] text-muted transition-colors duration-150 hover:text-ink"
+                      },
+                      "text": "$t:community.user.register"
+                    }
+                  ]
+                },
+                {
+                  "id": "member_profile_box",
+                  "type": "basic",
+                  "name": "Div",
+                  "if": "{{_global.currentUser?.uuid}}",
+                  "props": {
+                    "className": "mb-8 rounded-card border border-rule bg-paper-2 p-4"
+                  },
+                  "children": [
+                    {
+                      "id": "member_profile_head",
+                      "type": "basic",
+                      "name": "Div",
+                      "props": {
+                        "className": "flex items-center gap-3"
+                      },
+                      "children": [
+                        {
+                          "id": "member_profile_avatar",
+                          "type": "basic",
+                          "name": "Div",
+                          "props": {
+                            "className": "flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-accent-wash text-[15px] font-bold text-accent"
+                          },
+                          "text": "MY"
+                        },
+                        {
+                          "id": "member_profile_info",
+                          "type": "basic",
+                          "name": "Div",
+                          "props": {
+                            "className": "min-w-0 flex-1"
+                          },
+                          "children": [
+                            {
+                              "id": "member_profile_name",
+                              "type": "basic",
+                              "name": "H3",
+                              "props": {
+                                "className": "truncate text-[15px] font-bold text-ink"
+                              },
+                              "text": "{{_global.currentUser?.name ?? \"-\"}}"
+                            },
+                            {
+                              "id": "member_profile_email",
+                              "type": "basic",
+                              "name": "Span",
+                              "props": {
+                                "className": "mt-0.5 block truncate font-mono text-[11px] text-faint"
+                              },
+                              "text": "{{_global.currentUser?.email ?? \"\"}}"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "id": "member_quick_links",
+                      "type": "basic",
+                      "name": "Div",
+                      "props": {
+                        "className": "mt-3.5 flex flex-col gap-1.5"
+                      },
+                      "children": [
+                        {
+                          "id": "member_mypage_link",
+                          "type": "basic",
+                          "name": "A",
+                          "props": {
+                            "href": "/mypage",
+                            "className": "flex items-center justify-between rounded-ctl bg-paper-3 px-3 py-2.5 text-[13px] font-medium text-ink-2 transition-colors duration-150 hover:bg-accent-wash hover:text-accent"
+                          },
+                          "children": [
+                            {
+                              "type": "basic",
+                              "name": "Span",
+                              "text": "$t:community.sidebar.quick_mypage"
+                            },
+                            {
+                              "type": "basic",
+                              "name": "Span",
+                              "props": {
+                                "className": "text-[14px] text-faint"
+                              },
+                              "text": "›"
+                            }
+                          ]
+                        },
+                        {
+                          "id": "member_edit_link",
+                          "type": "basic",
+                          "name": "A",
+                          "props": {
+                            "href": "/mypage/edit",
+                            "className": "flex items-center justify-between rounded-ctl bg-paper-3 px-3 py-2.5 text-[13px] font-medium text-ink-2 transition-colors duration-150 hover:bg-accent-wash hover:text-accent"
+                          },
+                          "children": [
+                            {
+                              "type": "basic",
+                              "name": "Span",
+                              "text": "$t:community.sidebar.quick_edit"
+                            },
+                            {
+                              "type": "basic",
+                              "name": "Span",
+                              "props": {
+                                "className": "text-[14px] text-faint"
+                              },
+                              "text": "›"
+                            }
+                          ]
+                        },
+                        {
+                          "id": "member_photo_link",
+                          "type": "basic",
+                          "name": "A",
+                          "props": {
+                            "href": "/photo",
+                            "className": "flex items-center justify-between rounded-ctl bg-paper-3 px-3 py-2.5 text-[13px] font-medium text-ink-2 transition-colors duration-150 hover:bg-accent-wash hover:text-accent"
+                          },
+                          "children": [
+                            {
+                              "type": "basic",
+                              "name": "Span",
+                              "text": "$t:community.sidebar.quick_photo"
+                            },
+                            {
+                              "type": "basic",
+                              "name": "Span",
+                              "props": {
+                                "className": "text-[14px] text-faint"
+                              },
+                              "text": "›"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "id": "member_logout_button",
+                      "type": "basic",
+                      "name": "Button",
+                      "props": {
+                        "type": "button",
+                        "className": "mt-3 w-full cursor-pointer rounded-ctl border border-rule px-3 py-2 text-[13px] font-medium text-muted transition-colors duration-150 hover:border-rule-2 hover:text-ink"
+                      },
+                      "actions": [
+                        {
+                          "type": "click",
+                          "handler": "logout"
+                        }
+                      ],
+                      "text": "$t:community.user.logout"
+                    }
+                  ]
+                },
+                {
+                  "id": "notice_widget",
+                  "type": "basic",
+                  "name": "Div",
+                  "props": {
+                    "className": "mb-8 overflow-hidden rounded-card border border-rule bg-paper-2"
+                  },
+                  "children": [
+                    {
+                      "id": "notice_label",
+                      "type": "basic",
+                      "name": "A",
+                      "props": {
+                        "href": "/board/notice",
+                        "className": "block border-b border-rule px-4 py-3 text-[11px] font-semibold tracking-[0.12em] text-muted hover:text-ink"
+                      },
+                      "text": "$t:community.sidebar.notice_title"
+                    },
+                    {
+                      "id": "notice_empty",
+                      "type": "basic",
+                      "name": "Div",
+                      "props": {
+                        "className": "px-4 py-3 text-[12px] text-muted"
+                      },
+                      "if": "{{(sidebar_notice?.data?.data ?? []).length === 0}}",
+                      "text": "$t:community.sidebar.empty"
+                    },
+                    {
+                      "id": "notice_list",
+                      "type": "basic",
+                      "name": "Div",
+                      "if": "{{(sidebar_notice?.data?.data ?? []).length > 0}}",
+                      "props": {
+                        "className": "px-2 pb-1"
+                      },
+                      "children": [
+                        {
+                          "id": "notice_item_{{notice_post.id}}",
+                          "type": "basic",
+                          "name": "A",
+                          "iteration": {
+                            "source": "{{sidebar_notice?.data?.data ?? []}}",
+                            "item_var": "notice_post"
+                          },
+                          "props": {
+                            "href": "/board/notice/{{notice_post.id}}",
+                            "className": "group flex items-baseline gap-2 border-b border-rule px-2 py-2 last:border-0 hover:bg-paper-3"
+                          },
+                          "children": [
+                            {
+                              "id": "notice_item_title_{{notice_post.id}}",
+                              "type": "basic",
+                              "name": "Span",
+                              "props": {
+                                "className": "min-w-0 flex-1 truncate text-[13px] leading-5 text-ink-2 group-hover:text-accent"
+                              },
+                              "text": "{{notice_post?.title ?? \"\"}}"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "id": "column_widget",
+                  "type": "basic",
+                  "name": "Div",
+                  "props": {
+                    "className": "overflow-hidden rounded-card border border-rule bg-paper-2"
+                  },
+                  "children": [
+                    {
+                      "id": "column_label",
+                      "type": "basic",
+                      "name": "A",
+                      "props": {
+                        "href": "/board/baseball",
+                        "className": "block border-b border-rule px-4 py-3 text-[11px] font-semibold tracking-[0.12em] text-muted hover:text-ink"
+                      },
+                      "text": "$t:community.sidebar.column_title"
+                    },
+                    {
+                      "id": "column_empty",
+                      "type": "basic",
+                      "name": "Div",
+                      "props": {
+                        "className": "px-4 py-3 text-[12px] text-muted"
+                      },
+                      "if": "{{(sidebar_column?.data?.data ?? []).length === 0}}",
+                      "text": "$t:community.sidebar.empty"
+                    },
+                    {
+                      "id": "column_list",
+                      "type": "basic",
+                      "name": "Div",
+                      "if": "{{(sidebar_column?.data?.data ?? []).length > 0}}",
+                      "props": {
+                        "className": "px-2 pb-1"
+                      },
+                      "children": [
+                        {
+                          "id": "column_item_{{column_post.id}}",
+                          "type": "basic",
+                          "name": "A",
+                          "iteration": {
+                            "source": "{{sidebar_column?.data?.data ?? []}}",
+                            "item_var": "column_post"
+                          },
+                          "props": {
+                            "href": "/board/baseball/{{column_post.id}}",
+                            "className": "group flex items-baseline gap-2 border-b border-rule px-2 py-2 last:border-0 hover:bg-paper-3"
+                          },
+                          "children": [
+                            {
+                              "id": "column_item_title_{{column_post.id}}",
+                              "type": "basic",
+                              "name": "Span",
+                              "props": {
+                                "className": "min-w-0 flex-1 truncate text-[13px] leading-5 text-ink-2 group-hover:text-accent"
+                              },
+                              "text": "{{column_post?.title ?? \"\"}}"
+                            },
+                            {
+                              "id": "column_item_count_{{column_post.id}}",
+                              "type": "basic",
+                              "name": "Span",
+                              "props": {
+                                "className": "tnum shrink-0 font-mono text-[11px] text-faint"
+                              },
+                              "if": "{{(column_post?.comment_count ?? 0) > 0}}",
+                              "text": "{{column_post?.comment_count ?? 0}}"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "comment": "=== Ft2 inline single line · the page one dark beat ===",
+          "id": "site_footer",
+          "type": "basic",
+          "name": "Div",
+          "props": {
+            "className": "mt-auto bg-graphite"
+          },
+          "children": [
+            {
+              "id": "site_footer_inner",
+              "type": "basic",
+              "name": "Div",
+              "props": {
+                "className": "mx-auto flex w-full max-w-[1240px] flex-wrap items-center gap-x-3 gap-y-1 px-4 py-5 md:px-6"
+              },
+              "children": [
+                {
+                  "id": "footer_mark",
+                  "type": "basic",
+                  "name": "Span",
+                  "props": {
+                    "className": "text-[13px] font-semibold tracking-[-0.02em] text-graphite-ink"
+                  },
+                    "text": "{{_global.settings?.general?.site_name ?? 'Site'}}"
+                },
+                {
+                  "id": "footer_sep",
+                  "type": "basic",
+                  "name": "Span",
+                  "props": {
+                    "aria-hidden": "true",
+                    "className": "font-mono text-[11px] text-graphite-ink"
+                  },
+                  "text": "·"
+                },
+                {
+                  "id": "footer_copy",
+                  "type": "basic",
+                  "name": "Span",
+                  "props": {
+                    "className": "text-[11px] text-graphite-ink"
+                  },
+                  "text": "$t:community.footer.copyright"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,279 @@
+{
+  "community": {
+    "base_layout_title": "Community User Template",
+    "base_layout_description": "Gnuboard7 new community/board-centered user template",
+    "header": {
+      "site_name": "60-60",
+      "logo_alt": "60-60",
+      "search_placeholder": "Search boards & posts you want to explore",
+      "category_label": "Categories",
+      "photo_host": "Image Host"
+    },
+    "data_source": {
+      "boards": "Board menu",
+      "current_user": "Current user",
+      "sidebar_recent": "Sidebar recent posts",
+      "sidebar_popular": "Sidebar popular posts",
+      "sidebar_notice": "Sidebar notices",
+      "sidebar_column": "Sidebar columns",
+      "latest": "Recent posts",
+      "posts": "Post list",
+      "post": "Post detail",
+      "recommendation": "Recommendation state",
+      "popular": "Popular posts",
+      "notice_photos": "Notice photo posts",
+      "baseball_photos": "Baseball photo posts",
+      "form_data": "Write form data",
+      "form_meta": "Write form meta",
+      "search_results": "Search results",
+      "profile": "My profile",
+      "my_posts": "My posts"
+    },
+    "nav": {
+      "home": "Home",
+      "notice": "Notice",
+      "free": "Free Board",
+      "qna": "Q&A",
+      "data": "Resources",
+      "board": "Board",
+      "write": "Write",
+      "mypage": "My",
+      "images": "Images"
+    },
+    "user": {
+      "login": "Sign in",
+      "logout": "Sign out",
+      "register": "Sign up"
+    },
+    "login": {
+      "page_title": "Sign in",
+      "page_description": "Community user sign in",
+      "title": "Welcome back",
+      "lede": "Sign in to use your board permissions and author profile.",
+      "email_label": "Email",
+      "email_placeholder": "name@example.com",
+      "password_label": "Password",
+      "password_placeholder": "Enter your password",
+      "submit": "Sign in",
+      "submitting": "Signing in…",
+      "no_account": "Don't have an account?",
+      "forgot_password": "Forgot your password?"
+    },
+    "register": {
+      "page_title": "Sign up",
+      "page_description": "Create a community account",
+      "title": "Join the community",
+      "lede": "Create an account to write posts, comment, and recommend.",
+      "name_label": "Name",
+      "name_placeholder": "Your name",
+      "nickname_label": "Nickname",
+      "nickname_placeholder": "Optional",
+      "email_label": "Email",
+      "email_placeholder": "name@example.com",
+      "password_label": "Password",
+      "password_placeholder": "At least 8 characters",
+      "password_confirm_label": "Confirm password",
+      "password_confirm_placeholder": "Re-enter your password",
+      "agree_terms": "I agree to the terms of use",
+      "agree_privacy": "I agree to the privacy policy",
+      "submit": "Create account",
+      "have_account": "Already have an account?",
+      "error_required": "Please fill in the required fields.",
+      "error_password_mismatch": "Passwords do not match.",
+      "error_agree": "Please accept the agreements."
+    },
+    "sidebar": {
+      "guest_title": "Sign in to get started",
+      "guest_description": "Sign in to view your activity and board permissions.",
+      "member_label": "My account",
+      "quick_mypage": "My posts & activity",
+      "quick_edit": "Profile & account settings",
+      "quick_photo": "Image Hosting (/photo)",
+      "latest_title": "Latest posts",
+      "popular_title": "Popular posts",
+      "notice_title": "Notice",
+      "column_title": "Column",
+      "empty": "No posts to display."
+    },
+    "footer": {
+      "copyright": "© gnuboard7 Event-us Style Community Template"
+    },
+    "home": {
+      "page_title": "Community Home",
+      "page_description": "Board/community-centered template home",
+      "title": "Community",
+      "lede": "A community space for boards and conversation.",
+      "boards_title": "All boards",
+      "latest_title": "Latest posts",
+      "latest_empty": "No posts yet.",
+      "popular_title": "Popular",
+      "gallery_title": "Gallery",
+      "gallery_badge": "NEW!!",
+      "gallery_subtitle": "Explore the latest photos and highlights from the community",
+      "gallery_prev": "Previous gallery",
+      "gallery_next": "Next gallery",
+      "gallery_empty": "No photos yet.",
+      "gallery_no_image": "No image",
+      "tab_latest": "Latest",
+      "tab_popular": "Popular",
+      "feed_subtitle": "Real-time latest posts and popular topics",
+      "popular_rank": "Rank"
+    },
+    "board": {
+      "page_title": "Board",
+      "page_description": "Board post list",
+      "title_fallback": "Board",
+      "col_category": "Category",
+      "col_title": "Title",
+      "col_author": "Author",
+      "col_date": "Date",
+      "col_views": "Views",
+      "notice": "Notice",
+      "empty": "No posts have been published yet.",
+      "total_unit": "posts",
+      "views": "{{count}} views",
+      "comments": "{{count}} comments",
+      "prev": "Previous",
+      "next": "Next",
+      "page": "Page {{current}} of {{last}}",
+      "col_board": "Board",
+      "write": "Write"
+    },
+    "write": {
+      "page_title": "Write",
+      "edit_page_title": "Edit post",
+      "page_description": "Create or edit a post",
+      "title_new": "Write",
+      "title_edit": "Edit post",
+      "category_label": "Category",
+      "category_none": "None",
+      "title_label": "Title",
+      "title_placeholder": "Enter a title",
+      "content_label": "Content",
+      "content_placeholder": "Write your post (at least 10 characters)",
+      "submit": "Publish",
+      "submit_edit": "Save",
+      "cancel": "Cancel",
+      "login_required": "Sign in to write a post.",
+      "no_permission": "You do not have permission to write."
+    },
+    "post": {
+      "page_title": "Post",
+      "page_description": "Community post view",
+      "home": "Home",
+      "board": "Board",
+      "title_placeholder": "Untitled post",
+      "meta_date": "Date",
+      "meta_views": "Views",
+      "meta_comments": "Comments",
+      "content_unavailable": "This post cannot be viewed.",
+      "edit": "Edit",
+      "back_to_list": "Back to list",
+      "hit": "{{count}} views",
+      "comment_count": "{{count}} comments",
+      "comments_title": "Comments",
+      "comment_read_denied": "You do not have permission to read comments.",
+      "comments_empty": "No comments yet.",
+      "comment_placeholder": "Write a comment.",
+      "comment_button": "Submit",
+      "comment_submit": "Post comment",
+      "comment_submitting": "Submitting…",
+      "guest_name_placeholder": "Display name",
+      "guest_password_placeholder": "Comment password"
+    },
+    "forgot": {
+      "page_title": "Forgot password",
+      "page_description": "Request a password reset email",
+      "title": "Forgot password",
+      "lede": "We will send reset instructions to your email.",
+      "submit": "Send reset email",
+      "success": "Reset instructions were sent. Check your email.",
+      "back_to_login": "Back to sign in"
+    },
+    "reset": {
+      "page_title": "Reset password",
+      "page_description": "Set a new password",
+      "title": "New password",
+      "submit": "Change password",
+      "invalid_link": "This reset link is not valid."
+    },
+    "mypage": {
+      "page_title": "My page",
+      "edit_page_title": "Edit profile",
+      "password_page_title": "Change password",
+      "page_description": "Your account and posts",
+      "title": "My page",
+      "edit_title": "Edit profile",
+      "password_title": "Change password",
+      "edit": "Edit profile",
+      "change_password": "Change password",
+      "save": "Save",
+      "my_posts": "My posts",
+      "posts_empty": "You have not written any posts.",
+      "name_label": "Name",
+      "nickname_label": "Nickname",
+      "email_label": "Email",
+      "bio_label": "Bio",
+      "current_password_label": "Current password",
+      "new_password_label": "New password",
+      "confirm_password_label": "Confirm new password"
+    },
+    "search": {
+      "page_title": "Search",
+      "page_description": "Search posts",
+      "title": "Search",
+      "lede": "Search post titles and bodies.",
+      "placeholder": "At least 2 characters",
+      "submit": "Search",
+      "hint": "Enter a search term.",
+      "too_short": "Use at least 2 characters.",
+      "empty": "No results found.",
+      "total_unit": "results"
+    },
+    "theme": {
+      "toggle": "Toggle dark mode"
+    },
+    "images": {
+      "page_title": "Image Embed",
+      "page_description": "Upload images and get external Embed code.",
+      "title": "Image Embed Hosting",
+      "description": "Upload JPG, PNG, or WebP and the server will convert it to WebP.",
+      "choose": "Choose images",
+      "copy": "Copy Embed",
+      "copy_all": "Copy batch Embed",
+      "copy_all_copied": "Batch copied",
+      "copied": "Copied",
+      "processing": "Converting…",
+      "ready": "My images",
+      "delete": "Delete",
+      "empty": "No uploaded images yet."
+    }
+  },
+  "error": {
+    "401": {
+      "title": "Sign in required",
+      "description": "Please sign in to continue."
+    },
+    "403": {
+      "title": "Access denied",
+      "description": "You don't have permission to access this page."
+    },
+    "404": {
+      "title": "Page not found",
+      "description": "The page you're looking for may have moved or no longer exists."
+    },
+    "500": {
+      "title": "Something went wrong",
+      "description": "Please try again in a moment."
+    },
+    "503": {
+      "title": "Temporarily unavailable",
+      "description": "We're updating the service. Please try again soon."
+    },
+    "back_to_home": "Back to Home",
+    "maintenance": {
+      "title": "Under maintenance",
+      "description": "We're briefly updating things to improve your experience."
+    }
+  }
+}

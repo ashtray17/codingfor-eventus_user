@@ -1,0 +1,88 @@
+{
+    "identifier": "codingfor-eventus_user",
+    "vendor": "codingfor",
+    "name": {
+        "ko": "코딩포 이벤터스형 커뮤니티 템플릿",
+        "en": "Codingfor Event-us Style Community Template"
+    },
+    "version": "0.1.0",
+    "license": "MIT",
+    "description": {
+        "ko": "이벤터스(Event-us) 스타일 2단 카테고리 헤더·배지형 카드 그리드·소프트 워시 UI를 적용한 커뮤니티 사용자 템플릿",
+        "en": "Community user template featuring Event-us style 2-tier category header, badge-driven card grid, and soft-wash UI"
+    },
+    "type": "user",
+    "hidden": false,
+    "locales": [
+        "ko",
+        "en"
+    ],
+    "author": {
+        "name": "codingfor",
+        "email": "contact@example.com",
+        "url": "https://example.com"
+    },
+    "release_date": "2026-10-24",
+    "g7_version": ">=7.0.10",
+    "dependencies": {
+        "modules": {
+            "sirsoft-board": ">=1.1.0"
+        },
+        "plugins": {}
+    },
+    "assets": {
+        "css": [
+            "dist/css/components.css"
+        ],
+        "js": [
+            "dist/js/components.iife.js"
+        ],
+        "fonts": [],
+        "images": []
+    },
+    "components": {
+        "basic": [
+            "div",
+            "button",
+            "h1",
+            "h2",
+            "h3",
+            "a",
+            "span",
+            "img",
+            "input",
+            "textarea"
+        ],
+        "composite": [
+            "ThemeToggle",
+            "HtmlContent",
+            "ImageUploader"
+        ],
+        "layout": []
+    },
+    "error_config": {
+        "layouts": {
+            "401": "errors/401",
+            "403": "errors/403",
+            "404": "errors/404",
+            "500": "errors/500",
+            "503": "errors/503",
+            "maintenance": "errors/maintenance"
+        }
+    },
+    "externals": [
+        {
+            "id": "jetbrains-mono",
+            "type": "webfont",
+            "url": "https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap",
+            "preconnect": "https://fonts.gstatic.com",
+            "crossorigin": "anonymous"
+        }
+    ],
+    "features": {
+        "dark_mode": true,
+        "responsive": true,
+        "multi_language": true,
+        "multi_currency": false
+    }
+}

@@ -1,0 +1,495 @@
+{
+  "version": "1.0.0",
+  "layout_name": "register",
+  "permissions": [],
+  "extends": "_user_base",
+  "meta": {
+    "title": "$t:community.register.page_title",
+    "description": "$t:community.register.page_description",
+    "guest_only": true
+  },
+  "initLocal": {
+    "register_name": "",
+    "register_nickname": "",
+    "register_email": "",
+    "register_password": "",
+    "register_password_confirmation": "",
+    "register_agree_terms": false,
+    "register_agree_privacy": false,
+    "register_submitting": false,
+    "register_error": ""
+  },
+  "slots": {
+    "content": [
+      {
+        "id": "register_root",
+        "type": "basic",
+        "name": "Div",
+        "props": {
+          "className": "mx-auto w-full max-w-[420px] overflow-hidden rounded-card border border-rule bg-paper-2 px-6 py-7"
+        },
+        "children": [
+          {
+            "id": "register_intro",
+            "type": "basic",
+            "name": "Div",
+            "props": {
+              "className": "border-b border-rule pb-3"
+            },
+            "children": [
+              {
+                "id": "register_title",
+                "type": "basic",
+                "name": "H1",
+                "props": {
+                  "className": "text-[22px] font-bold tracking-[-0.03em] text-ink"
+                },
+                "text": "$t:community.register.title"
+              },
+              {
+                "id": "register_lede",
+                "type": "basic",
+                "name": "Span",
+                "props": {
+                  "className": "mt-1 block text-[13px] leading-6 text-muted"
+                },
+                "text": "$t:community.register.lede"
+              }
+            ]
+          },
+          {
+            "id": "register_form",
+            "type": "basic",
+            "name": "Div",
+            "props": {
+              "className": "pt-5"
+            },
+            "children": [
+              {
+                "id": "register_name_field",
+                "type": "basic",
+                "name": "Div",
+                "props": {
+                  "className": "mb-3"
+                },
+                "children": [
+                  {
+                    "id": "register_name_label",
+                    "type": "basic",
+                    "name": "Span",
+                    "props": {
+                      "className": "mb-1.5 block text-[10px] tracking-[0.1em] text-muted"
+                    },
+                    "text": "$t:community.register.name_label"
+                  },
+                  {
+                    "id": "register_name",
+                    "type": "basic",
+                    "name": "Input",
+                    "props": {
+                      "type": "text",
+                      "name": "name",
+                      "autoComplete": "name",
+                      "placeholder": "$t:community.register.name_placeholder",
+                      "aria-label": "$t:community.register.name_label",
+                      "value": "{{_local.register_name ?? \"\"}}",
+                      "className": "h-11 w-full rounded-ctl border border-rule bg-paper-2 px-3 text-[14px] text-ink transition-colors duration-150 placeholder:text-faint hover:border-rule-2 focus-visible:border-accent"
+                    },
+                    "actions": [
+                      {
+                        "type": "input",
+                        "handler": "setState",
+                        "params": {
+                          "target": "local",
+                          "register_name": "{{$event.target.value}}",
+                          "register_error": ""
+                        }
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "register_nickname_field",
+                "type": "basic",
+                "name": "Div",
+                "props": {
+                  "className": "mb-3"
+                },
+                "children": [
+                  {
+                    "id": "register_nickname_label",
+                    "type": "basic",
+                    "name": "Span",
+                    "props": {
+                      "className": "mb-1.5 block text-[10px] tracking-[0.1em] text-muted"
+                    },
+                    "text": "$t:community.register.nickname_label"
+                  },
+                  {
+                    "id": "register_nickname",
+                    "type": "basic",
+                    "name": "Input",
+                    "props": {
+                      "type": "text",
+                      "name": "nickname",
+                      "autoComplete": "nickname",
+                      "placeholder": "$t:community.register.nickname_placeholder",
+                      "aria-label": "$t:community.register.nickname_label",
+                      "value": "{{_local.register_nickname ?? \"\"}}",
+                      "className": "h-11 w-full rounded-ctl border border-rule bg-paper-2 px-3 text-[14px] text-ink transition-colors duration-150 placeholder:text-faint hover:border-rule-2 focus-visible:border-accent"
+                    },
+                    "actions": [
+                      {
+                        "type": "input",
+                        "handler": "setState",
+                        "params": {
+                          "target": "local",
+                          "register_nickname": "{{$event.target.value}}",
+                          "register_error": ""
+                        }
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "register_email_field",
+                "type": "basic",
+                "name": "Div",
+                "props": {
+                  "className": "mb-3"
+                },
+                "children": [
+                  {
+                    "id": "register_email_label",
+                    "type": "basic",
+                    "name": "Span",
+                    "props": {
+                      "className": "mb-1.5 block text-[10px] tracking-[0.1em] text-muted"
+                    },
+                    "text": "$t:community.register.email_label"
+                  },
+                  {
+                    "id": "register_email",
+                    "type": "basic",
+                    "name": "Input",
+                    "props": {
+                      "type": "email",
+                      "name": "email",
+                      "autoComplete": "username",
+                      "placeholder": "$t:community.register.email_placeholder",
+                      "aria-label": "$t:community.register.email_label",
+                      "value": "{{_local.register_email ?? \"\"}}",
+                      "className": "h-11 w-full rounded-ctl border border-rule bg-paper-2 px-3 text-[14px] text-ink transition-colors duration-150 placeholder:text-faint hover:border-rule-2 focus-visible:border-accent"
+                    },
+                    "actions": [
+                      {
+                        "type": "input",
+                        "handler": "setState",
+                        "params": {
+                          "target": "local",
+                          "register_email": "{{$event.target.value}}",
+                          "register_error": ""
+                        }
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "register_password_field",
+                "type": "basic",
+                "name": "Div",
+                "props": {
+                  "className": "mb-3"
+                },
+                "children": [
+                  {
+                    "id": "register_password_label",
+                    "type": "basic",
+                    "name": "Span",
+                    "props": {
+                      "className": "mb-1.5 block text-[10px] tracking-[0.1em] text-muted"
+                    },
+                    "text": "$t:community.register.password_label"
+                  },
+                  {
+                    "id": "register_password",
+                    "type": "basic",
+                    "name": "Input",
+                    "props": {
+                      "type": "password",
+                      "name": "password",
+                      "autoComplete": "new-password",
+                      "placeholder": "$t:community.register.password_placeholder",
+                      "aria-label": "$t:community.register.password_label",
+                      "value": "{{_local.register_password ?? \"\"}}",
+                      "className": "h-11 w-full rounded-ctl border border-rule bg-paper-2 px-3 text-[14px] text-ink transition-colors duration-150 placeholder:text-faint hover:border-rule-2 focus-visible:border-accent"
+                    },
+                    "actions": [
+                      {
+                        "type": "input",
+                        "handler": "setState",
+                        "params": {
+                          "target": "local",
+                          "register_password": "{{$event.target.value}}",
+                          "register_error": ""
+                        }
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "register_password_confirm_field",
+                "type": "basic",
+                "name": "Div",
+                "props": {
+                  "className": "mb-3"
+                },
+                "children": [
+                  {
+                    "id": "register_password_confirm_label",
+                    "type": "basic",
+                    "name": "Span",
+                    "props": {
+                      "className": "mb-1.5 block text-[10px] tracking-[0.1em] text-muted"
+                    },
+                    "text": "$t:community.register.password_confirm_label"
+                  },
+                  {
+                    "id": "register_password_confirm",
+                    "type": "basic",
+                    "name": "Input",
+                    "props": {
+                      "type": "password",
+                      "name": "password_confirmation",
+                      "autoComplete": "new-password",
+                      "placeholder": "$t:community.register.password_confirm_placeholder",
+                      "aria-label": "$t:community.register.password_confirm_label",
+                      "value": "{{_local.register_password_confirmation ?? \"\"}}",
+                      "className": "h-11 w-full rounded-ctl border border-rule bg-paper-2 px-3 text-[14px] text-ink transition-colors duration-150 placeholder:text-faint hover:border-rule-2 focus-visible:border-accent"
+                    },
+                    "actions": [
+                      {
+                        "type": "input",
+                        "handler": "setState",
+                        "params": {
+                          "target": "local",
+                          "register_password_confirmation": "{{$event.target.value}}",
+                          "register_error": ""
+                        }
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "register_agree_terms_row",
+                "type": "basic",
+                "name": "Div",
+                "props": {
+                  "className": "mb-2 flex items-center gap-2"
+                },
+                "children": [
+                  {
+                    "id": "register_agree_terms",
+                    "type": "basic",
+                    "name": "Input",
+                    "props": {
+                      "type": "checkbox",
+                      "name": "agree_terms",
+                      "checked": "{{_local.register_agree_terms === true}}",
+                      "aria-label": "$t:community.register.agree_terms",
+                      "className": "h-4 w-4 accent-current"
+                    },
+                    "actions": [
+                      {
+                        "type": "change",
+                        "handler": "setState",
+                        "params": {
+                          "target": "local",
+                          "register_agree_terms": "{{$event.target.checked}}",
+                          "register_error": ""
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "id": "register_agree_terms_label",
+                    "type": "basic",
+                    "name": "Span",
+                    "props": {
+                      "className": "text-[13px] text-ink"
+                    },
+                    "text": "$t:community.register.agree_terms"
+                  }
+                ]
+              },
+              {
+                "id": "register_agree_privacy_row",
+                "type": "basic",
+                "name": "Div",
+                "props": {
+                  "className": "mb-3 flex items-center gap-2"
+                },
+                "children": [
+                  {
+                    "id": "register_agree_privacy",
+                    "type": "basic",
+                    "name": "Input",
+                    "props": {
+                      "type": "checkbox",
+                      "name": "agree_privacy",
+                      "checked": "{{_local.register_agree_privacy === true}}",
+                      "aria-label": "$t:community.register.agree_privacy",
+                      "className": "h-4 w-4 accent-current"
+                    },
+                    "actions": [
+                      {
+                        "type": "change",
+                        "handler": "setState",
+                        "params": {
+                          "target": "local",
+                          "register_agree_privacy": "{{$event.target.checked}}",
+                          "register_error": ""
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "id": "register_agree_privacy_label",
+                    "type": "basic",
+                    "name": "Span",
+                    "props": {
+                      "className": "text-[13px] text-ink"
+                    },
+                    "text": "$t:community.register.agree_privacy"
+                  }
+                ]
+              },
+              {
+                "id": "register_error",
+                "type": "basic",
+                "name": "Div",
+                "props": {
+                  "role": "alert",
+                  "aria-live": "polite",
+                  "className": "mt-2 rounded-ctl border border-danger-border bg-danger-wash px-3 py-2 text-[12px] text-danger"
+                },
+                "if": "{{_local.register_error}}",
+                "text": "{{_local.register_error ?? \"\"}}"
+              },
+              {
+                "id": "register_submit",
+                "type": "basic",
+                "name": "Button",
+                "props": {
+                  "type": "button",
+                  "className": "mt-4 w-full cursor-pointer rounded-ctl bg-accent px-4 py-2.5 text-[14px] font-semibold text-accent-ink transition-colors duration-150 hover:bg-accent-hover disabled:cursor-not-allowed disabled:opacity-40",
+                  "disabled": "{{_local.register_submitting === true}}"
+                },
+                "actions": [
+                  {
+                    "type": "click",
+                    "handler": "sequence",
+                    "if": "{{_local.register_submitting !== true && (_local.register_name ?? '').trim() !== '' && (_local.register_email ?? '').trim() !== '' && (_local.register_password ?? '') !== '' && _local.register_password === _local.register_password_confirmation && _local.register_agree_terms === true && _local.register_agree_privacy === true}}",
+                    "actions": [
+                      {
+                        "handler": "setState",
+                        "params": {
+                          "target": "local",
+                          "register_submitting": true,
+                          "register_error": ""
+                        }
+                      },
+                      {
+                        "handler": "apiCall",
+                        "target": "/api/auth/register",
+                        "params": {
+                          "method": "POST",
+                          "body": {
+                            "name": "{{_local.register_name ?? ''}}",
+                            "nickname": "{{_local.register_nickname ?? ''}}",
+                            "email": "{{_local.register_email ?? ''}}",
+                            "password": "{{_local.register_password ?? ''}}",
+                            "password_confirmation": "{{_local.register_password_confirmation ?? ''}}",
+                            "language": "ko",
+                            "agree_terms": true,
+                            "agree_privacy": true
+                          }
+                        },
+                        "onSuccess": [
+                          {
+                            "handler": "setState",
+                            "params": {
+                              "target": "local",
+                              "register_submitting": false
+                            }
+                          },
+                          {
+                            "handler": "navigate",
+                            "params": {
+                              "path": "/login"
+                            }
+                          }
+                        ],
+                        "onError": [
+                          {
+                            "handler": "setState",
+                            "params": {
+                              "target": "local",
+                              "register_submitting": false,
+                              "register_error": "{{error.message}}"
+                            }
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "click",
+                    "handler": "setState",
+                    "if": "{{_local.register_submitting !== true && ((_local.register_name ?? '').trim() === '' || (_local.register_email ?? '').trim() === '' || (_local.register_password ?? '') === '' || _local.register_password !== _local.register_password_confirmation || _local.register_agree_terms !== true || _local.register_agree_privacy !== true)}}",
+                    "params": {
+                      "target": "local",
+                      "register_error": "{{_local.register_password !== _local.register_password_confirmation ? '$t:community.register.error_password_mismatch' : ((_local.register_agree_terms !== true || _local.register_agree_privacy !== true) ? '$t:community.register.error_agree' : '$t:community.register.error_required')}}"
+                    }
+                  }
+                ],
+                "text": "$t:community.register.submit"
+              },
+              {
+                "id": "register_to_login",
+                "type": "basic",
+                "name": "Div",
+                "props": {
+                  "className": "mt-4 text-center text-[13px] text-muted"
+                },
+                "children": [
+                  {
+                    "id": "register_to_login_text",
+                    "type": "basic",
+                    "name": "Span",
+                    "text": "$t:community.register.have_account"
+                  },
+                  {
+                    "id": "register_to_login_link",
+                    "type": "basic",
+                    "name": "A",
+                    "props": {
+                      "href": "/login",
+                      "className": "ml-1 font-medium text-ink underline-offset-2 hover:underline"
+                    },
+                    "text": "$t:community.user.login"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

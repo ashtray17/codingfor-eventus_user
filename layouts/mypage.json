@@ -1,0 +1,342 @@
+{
+  "version": "1.0.0",
+  "layout_name": "mypage",
+  "permissions": [],
+  "extends": "_user_base",
+  "meta": {
+    "title": "$t:community.mypage.page_title",
+    "description": "$t:community.mypage.page_description"
+  },
+  "data_sources": [
+    {
+      "id": "profile",
+      "label_key": "$t:community.data_source.profile",
+      "type": "api",
+      "endpoint": "/api/me",
+      "method": "GET",
+      "auto_fetch": true,
+      "auth_mode": "required",
+      "loading_strategy": "progressive",
+      "refetchOnMount": true,
+      "fallback": {
+        "data": {
+          "name": "",
+          "nickname": "",
+          "email": "",
+          "bio": "",
+          "created_at": ""
+        }
+      },
+      "errorHandling": {
+        "401": {
+          "handler": "navigate",
+          "params": {
+            "path": "/login",
+            "query": {
+              "redirect": "/mypage"
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": "my_posts",
+      "label_key": "$t:community.data_source.my_posts",
+      "type": "api",
+      "endpoint": "/api/modules/sirsoft-board/me/board-activities",
+      "method": "GET",
+      "auto_fetch": true,
+      "auth_mode": "required",
+      "loading_strategy": "progressive",
+      "refetchOnMount": true,
+      "params": {
+        "activity_type": "authored",
+        "page": "{{query.page ?? 1}}",
+        "per_page": 10,
+        "sort": "latest"
+      },
+      "fallback": {
+        "data": {
+          "data": [],
+          "current_page": 1,
+          "last_page": 1,
+          "total": 0
+        }
+      },
+      "errorHandling": {
+        "401": {
+          "handler": "suppress"
+        },
+        "403": {
+          "handler": "suppress"
+        }
+      }
+    }
+  ],
+  "slots": {
+    "content": [
+      {
+        "id": "mypage_root",
+        "type": "basic",
+        "name": "Div",
+        "children": [
+          {
+            "id": "mypage_title",
+            "type": "basic",
+            "name": "H1",
+            "props": {
+              "className": "mb-5 text-[24px] font-bold tracking-[-0.03em] text-ink sm:text-[28px]"
+            },
+            "text": "$t:community.mypage.title"
+          },
+          {
+            "id": "mypage_profile",
+            "type": "basic",
+            "name": "Div",
+            "props": {
+              "className": "mb-6 overflow-hidden rounded-card border border-rule bg-paper-2 px-5 py-5"
+            },
+            "children": [
+              {
+                "id": "mypage_profile_name",
+                "type": "basic",
+                "name": "H2",
+                "props": {
+                  "className": "text-[18px] font-bold text-ink"
+                },
+                "text": "{{profile?.data?.name ?? ''}}"
+              },
+              {
+                "id": "mypage_profile_nick",
+                "type": "basic",
+                "name": "Span",
+                "if": "{{profile?.data?.nickname}}",
+                "props": {
+                  "className": "mt-0.5 block text-[13px] text-muted"
+                },
+                "text": "{{profile?.data?.nickname ?? ''}}"
+              },
+              {
+                "id": "mypage_profile_email",
+                "type": "basic",
+                "name": "Span",
+                "props": {
+                  "className": "mt-1 block font-mono text-[12px] text-faint"
+                },
+                "text": "{{profile?.data?.email ?? ''}}"
+              },
+              {
+                "id": "mypage_profile_bio",
+                "type": "basic",
+                "name": "Span",
+                "if": "{{profile?.data?.bio}}",
+                "props": {
+                  "className": "mt-3 block text-[13px] leading-6 text-muted"
+                },
+                "text": "{{profile?.data?.bio ?? ''}}"
+              },
+              {
+                "id": "mypage_profile_joined",
+                "type": "basic",
+                "name": "Span",
+                "props": {
+                  "className": "mt-3 block text-[11px] text-faint"
+                },
+                "text": "{{profile?.data?.created_at ?? ''}}"
+              },
+              {
+                "id": "mypage_profile_actions",
+                "type": "basic",
+                "name": "Div",
+                "props": {
+                  "className": "mt-4 flex flex-wrap gap-2"
+                },
+                "children": [
+                  {
+                    "id": "mypage_to_edit",
+                    "type": "basic",
+                    "name": "A",
+                    "props": {
+                      "href": "/mypage/edit",
+                      "className": "rounded-ctl bg-accent px-3.5 py-2 text-[13px] font-semibold text-accent-ink transition-colors duration-150 hover:bg-accent-hover"
+                    },
+                    "text": "$t:community.mypage.edit"
+                  },
+                  {
+                    "id": "mypage_to_password",
+                    "type": "basic",
+                    "name": "A",
+                    "props": {
+                      "href": "/mypage/password",
+                      "className": "rounded-ctl border border-rule px-3.5 py-2 text-[13px] font-medium text-muted transition-colors duration-150 hover:border-rule-2 hover:text-ink"
+                    },
+                    "text": "$t:community.mypage.change_password"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "mypage_posts_head",
+            "type": "basic",
+            "name": "Div",
+            "props": {
+              "className": "mb-3 flex items-baseline gap-2"
+            },
+            "children": [
+              {
+                "id": "mypage_posts_title",
+                "type": "basic",
+                "name": "H2",
+                "props": {
+                  "className": "text-[15px] font-bold text-ink"
+                },
+                "text": "$t:community.mypage.my_posts"
+              },
+              {
+                "id": "mypage_posts_count",
+                "type": "basic",
+                "name": "Span",
+                "props": {
+                  "className": "tnum font-mono text-[11px] text-muted"
+                },
+                "text": "{{my_posts?.data?.total ?? 0}}"
+              }
+            ]
+          },
+          {
+            "id": "mypage_posts_empty",
+            "type": "basic",
+            "name": "Div",
+            "if": "{{(my_posts?.data?.data ?? []).length === 0}}",
+            "props": {
+              "className": "rounded-card border border-rule bg-paper-2 py-10 text-center text-[13px] text-faint"
+            },
+            "text": "$t:community.mypage.posts_empty"
+          },
+          {
+            "id": "mypage_posts_list",
+            "type": "basic",
+            "name": "Div",
+            "if": "{{(my_posts?.data?.data ?? []).length > 0}}",
+            "props": {
+              "className": "overflow-hidden rounded-card border border-rule bg-paper-2"
+            },
+            "children": [
+              {
+                "id": "mypage_post_{{post.id}}",
+                "type": "basic",
+                "name": "A",
+                "iteration": {
+                  "source": "{{my_posts?.data?.data ?? []}}",
+                  "item_var": "post"
+                },
+                "props": {
+                  "href": "/board/{{post.board_slug}}/{{post.id}}",
+                  "className": "group flex items-baseline gap-2 border-b border-rule px-4 py-3 last:border-0 transition-colors duration-150 hover:bg-paper-3"
+                },
+                "children": [
+                  {
+                    "id": "mypage_post_board_{{post.id}}",
+                    "type": "basic",
+                    "name": "Span",
+                    "props": {
+                      "className": "max-w-[7rem] shrink-0 truncate text-[11px] text-faint"
+                    },
+                    "text": "{{post.board_name ?? ''}}"
+                  },
+                  {
+                    "id": "mypage_post_title_{{post.id}}",
+                    "type": "basic",
+                    "name": "Span",
+                    "props": {
+                      "className": "min-w-0 flex-1 truncate text-[14px] text-ink-2 group-hover:text-accent"
+                    },
+                    "text": "{{post.title ?? ''}}"
+                  },
+                  {
+                    "id": "mypage_post_date_{{post.id}}",
+                    "type": "basic",
+                    "name": "Span",
+                    "props": {
+                      "className": "tnum hidden shrink-0 text-[11px] text-faint sm:block"
+                    },
+                    "text": "{{post.created_at_formatted ?? ''}}"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "mypage_pagination",
+            "type": "basic",
+            "name": "Div",
+            "if": "{{(my_posts?.data?.last_page ?? 1) > 1}}",
+            "props": {
+              "className": "mt-3 flex items-center justify-between gap-3 rounded-card border border-rule bg-paper-2 px-4 py-3"
+            },
+            "children": [
+              {
+                "id": "mypage_prev",
+                "type": "basic",
+                "name": "Button",
+                "props": {
+                  "type": "button",
+                  "className": "cursor-pointer rounded-ctl border border-rule px-3 py-2 text-[13px] font-medium text-muted transition-colors duration-150 hover:border-rule-2 hover:text-ink disabled:cursor-not-allowed disabled:opacity-40",
+                  "disabled": "{{(my_posts?.data?.current_page ?? 1) <= 1}}"
+                },
+                "actions": [
+                  {
+                    "type": "click",
+                    "handler": "navigate",
+                    "params": {
+                      "path": "/mypage",
+                      "mergeQuery": true,
+                      "query": {
+                        "page": "{{(my_posts?.data?.current_page ?? 1) - 1}}"
+                      }
+                    }
+                  }
+                ],
+                "text": "$t:community.board.prev"
+              },
+              {
+                "id": "mypage_page_state",
+                "type": "basic",
+                "name": "Span",
+                "props": {
+                  "className": "tnum font-mono text-[12px] text-muted"
+                },
+                "text": "{{my_posts?.data?.current_page ?? 1}} / {{my_posts?.data?.last_page ?? 1}}"
+              },
+              {
+                "id": "mypage_next",
+                "type": "basic",
+                "name": "Button",
+                "props": {
+                  "type": "button",
+                  "className": "cursor-pointer rounded-ctl border border-rule px-3 py-2 text-[13px] font-medium text-muted transition-colors duration-150 hover:border-rule-2 hover:text-ink disabled:cursor-not-allowed disabled:opacity-40",
+                  "disabled": "{{(my_posts?.data?.current_page ?? 1) >= (my_posts?.data?.last_page ?? 1)}}"
+                },
+                "actions": [
+                  {
+                    "type": "click",
+                    "handler": "navigate",
+                    "params": {
+                      "path": "/mypage",
+                      "mergeQuery": true,
+                      "query": {
+                        "page": "{{(my_posts?.data?.current_page ?? 1) + 1}}"
+                      }
+                    }
+                  }
+                ],
+                "text": "$t:community.board.next"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

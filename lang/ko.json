@@ -1,0 +1,282 @@
+{
+  "community": {
+    "base_layout_title": "커뮤니티 사용자 템플릿",
+    "base_layout_description": "그누보드7 커뮤니티/게시판 중심 신규 사용자 템플릿",
+    "header": {
+      "site_name": "60-60",
+      "logo_alt": "60-60",
+      "search_placeholder": "참여하고 싶은 게시판·글을 검색해 보세요",
+      "category_label": "카테고리",
+      "photo_host": "이미지 호스팅"
+    },
+    "data_source": {
+      "boards": "게시판 메뉴",
+      "current_user": "현재 사용자",
+      "sidebar_recent": "사이드바 최근 글",
+      "sidebar_popular": "사이드바 인기 글",
+      "sidebar_notice": "사이드바 공지사항",
+      "sidebar_column": "사이드바 칼럼",
+      "latest": "최근 게시글",
+      "posts": "게시글 목록",
+      "post": "게시글 상세",
+      "recommendation": "추천 상태",
+      "popular": "인기 게시글",
+      "notice_photos": "공지사항 사진 말머리",
+      "baseball_photos": "야구 사진 말머리",
+      "form_data": "글쓰기 폼 데이터",
+      "form_meta": "글쓰기 폼 메타",
+      "search_results": "검색 결과",
+      "profile": "내 프로필",
+      "my_posts": "내가 쓴 글"
+    },
+    "nav": {
+      "home": "홈",
+      "notice": "공지사항",
+      "free": "자유게시판",
+      "qna": "질문과답변",
+      "data": "자료실",
+      "board": "게시판",
+      "write": "글쓰기",
+      "mypage": "마이",
+      "images": "이미지"
+    },
+    "user": {
+      "login": "로그인",
+      "logout": "로그아웃",
+      "register": "회원가입"
+    },
+    "login": {
+      "page_title": "로그인",
+      "page_description": "커뮤니티 사용자 로그인",
+      "title": "다시 만나서 반갑습니다",
+      "lede": "계정으로 로그인하면 게시판 권한과 작성자 정보를 사용할 수 있습니다.",
+      "email_label": "이메일",
+      "email_placeholder": "name@example.com",
+      "password_label": "비밀번호",
+      "password_placeholder": "비밀번호를 입력하세요",
+      "submit": "로그인",
+      "submitting": "로그인 중…",
+      "no_account": "계정이 없으신가요?",
+      "forgot_password": "비밀번호를 잊으셨나요?"
+    },
+    "register": {
+      "page_title": "회원가입",
+      "page_description": "커뮤니티 회원 가입",
+      "title": "커뮤니티에 참여하기",
+      "lede": "계정을 만들면 글을 쓰고 댓글과 추천을 사용할 수 있습니다.",
+      "name_label": "이름",
+      "name_placeholder": "이름",
+      "nickname_label": "닉네임",
+      "nickname_placeholder": "선택 사항",
+      "email_label": "이메일",
+      "email_placeholder": "name@example.com",
+      "password_label": "비밀번호",
+      "password_placeholder": "8자 이상",
+      "password_confirm_label": "비밀번호 확인",
+      "password_confirm_placeholder": "비밀번호를 다시 입력하세요",
+      "agree_terms": "이용약관에 동의합니다",
+      "agree_privacy": "개인정보 처리방침에 동의합니다",
+      "submit": "가입하기",
+      "have_account": "이미 계정이 있으신가요?",
+      "error_required": "필수 항목을 입력해 주세요.",
+      "error_password_mismatch": "비밀번호가 일치하지 않습니다.",
+      "error_agree": "약관에 동의해 주세요."
+    },
+    "sidebar": {
+      "guest_title": "로그인하여 시작하기",
+      "guest_description": "로그인하면 내 활동과 게시판 권한을 확인할 수 있습니다.",
+      "member_label": "내 계정",
+      "quick_mypage": "내 작성글·활동 내역",
+      "quick_edit": "프로필·내 정보 관리",
+      "quick_photo": "이미지 호스팅 (/photo)",
+      "latest_title": "최신 글",
+      "popular_title": "인기 글",
+      "notice_title": "공지사항",
+      "column_title": "칼럼",
+      "empty": "표시할 게시글이 없습니다."
+    },
+    "footer": {
+      "copyright": "© gnuboard7 Event-us Style Community Template"
+    },
+    "home": {
+      "page_title": "커뮤니티 홈",
+      "page_description": "게시판/커뮤니티 중심 템플릿 홈",
+      "title": "커뮤니티",
+      "lede": "게시판과 소통이 있는 커뮤니티 공간입니다.",
+      "boards_title": "전체 게시판",
+      "latest_title": "최신 글",
+      "latest_empty": "아직 등록된 글이 없습니다.",
+      "popular_title": "인기 글",
+      "gallery_title": "갤러리",
+      "gallery_badge": "NEW!!",
+      "gallery_subtitle": "커뮤니티의 생생한 현장과 최신 사진을 만나보세요",
+      "gallery_prev": "이전 갤러리",
+      "gallery_next": "다음 갤러리",
+      "gallery_empty": "아직 등록된 사진이 없습니다.",
+      "gallery_no_image": "이미지 없음",
+      "tab_latest": "최신 글",
+      "tab_popular": "인기 글",
+      "feed_subtitle": "실시간으로 올라오는 새 글과 베스트 토픽",
+      "popular_rank": "순위"
+    },
+    "board": {
+      "page_title": "게시판",
+      "page_description": "게시판 게시글 목록",
+      "title_fallback": "게시판",
+      "col_category": "분류",
+      "col_title": "제목",
+      "col_author": "작성자",
+      "col_date": "날짜",
+      "col_views": "조회",
+      "notice": "공지",
+      "empty": "아직 등록된 게시글이 없습니다.",
+      "total_unit": "개의 글",
+      "views": "조회 {{count}}",
+      "comments": "댓글 {{count}}",
+      "prev": "이전",
+      "next": "다음",
+      "page": "{{current}} / {{last}} 페이지",
+      "col_board": "게시판",
+      "write": "글쓰기"
+    },
+    "write": {
+      "page_title": "글쓰기",
+      "edit_page_title": "글 수정",
+      "page_description": "게시글 작성 및 수정",
+      "title_new": "글쓰기",
+      "title_edit": "글 수정",
+      "category_label": "말머리",
+      "category_none": "선택 안 함",
+      "title_label": "제목",
+      "title_placeholder": "제목을 입력하세요",
+      "content_label": "내용",
+      "content_placeholder": "내용을 입력하세요 (10자 이상)",
+      "submit": "등록",
+      "submit_edit": "수정",
+      "cancel": "취소",
+      "login_required": "글을 쓰려면 로그인이 필요합니다.",
+      "no_permission": "글을 쓸 권한이 없습니다."
+    },
+    "post": {
+      "page_title": "게시글",
+      "page_description": "커뮤니티 게시글 보기",
+      "home": "홈",
+      "board": "게시판",
+      "title_placeholder": "제목 없는 게시글",
+      "meta_date": "작성",
+      "meta_views": "조회",
+      "meta_comments": "댓글",
+      "content_unavailable": "열람할 수 없는 글입니다.",
+      "edit": "수정",
+      "back_to_list": "목록으로",
+        "hit": "조회 {{count}}",
+        "recommend": "추천",
+        "recommended": "추천됨",
+        "recommend_count": "추천 {{count}}",
+        "comment_count": "댓글 {{count}}",
+      "comments_title": "댓글",
+      "comment_read_denied": "댓글을 볼 수 있는 권한이 없습니다.",
+      "comments_empty": "아직 댓글이 없습니다.",
+      "comment_placeholder": "댓글을 입력하세요.",
+      "comment_button": "등록",
+      "comment_submit": "댓글 등록",
+      "comment_submitting": "등록 중…",
+      "guest_name_placeholder": "작성자 이름",
+      "guest_password_placeholder": "댓글 비밀번호"
+    },
+    "forgot": {
+      "page_title": "비밀번호 찾기",
+      "page_description": "비밀번호 재설정 메일 요청",
+      "title": "비밀번호 찾기",
+      "lede": "가입한 이메일로 재설정 안내를 보냅니다.",
+      "submit": "재설정 메일 보내기",
+      "success": "재설정 안내를 보냈습니다. 메일을 확인해 주세요.",
+      "back_to_login": "로그인으로 돌아가기"
+    },
+    "reset": {
+      "page_title": "비밀번호 재설정",
+      "page_description": "새 비밀번호 설정",
+      "title": "새 비밀번호",
+      "submit": "비밀번호 변경",
+      "invalid_link": "유효하지 않은 재설정 링크입니다."
+    },
+    "mypage": {
+      "page_title": "마이페이지",
+      "edit_page_title": "프로필 수정",
+      "password_page_title": "비밀번호 변경",
+      "page_description": "내 계정과 작성글",
+      "title": "마이페이지",
+      "edit_title": "프로필 수정",
+      "password_title": "비밀번호 변경",
+      "edit": "프로필 수정",
+      "change_password": "비밀번호 변경",
+      "save": "저장",
+      "my_posts": "내가 쓴 글",
+      "posts_empty": "작성한 글이 없습니다.",
+      "name_label": "이름",
+      "nickname_label": "닉네임",
+      "email_label": "이메일",
+      "bio_label": "소개",
+      "current_password_label": "현재 비밀번호",
+      "new_password_label": "새 비밀번호",
+      "confirm_password_label": "새 비밀번호 확인"
+    },
+    "search": {
+      "page_title": "검색",
+      "page_description": "게시글 검색",
+      "title": "검색",
+      "lede": "게시글 제목과 본문에서 찾습니다.",
+      "placeholder": "검색어 2자 이상",
+      "submit": "검색",
+      "hint": "검색어를 입력하세요.",
+      "too_short": "검색어는 2자 이상이어야 합니다.",
+      "empty": "검색 결과가 없습니다.",
+      "total_unit": "건"
+    },
+    "theme": {
+      "toggle": "다크 모드 전환"
+    },
+    "images": {
+      "page_title": "이미지 Embed",
+      "page_description": "이미지를 업로드하고 외부 Embed 코드를 발급합니다.",
+      "title": "이미지 Embed 호스팅",
+      "description": "JPG, PNG, WebP를 업로드하면 서버가 WebP로 변환합니다.",
+      "choose": "이미지 선택",
+      "copy": "Embed 복사",
+      "copy_all": "이번 묶음 전체 복사",
+      "copy_all_copied": "전체 코드가 복사됨",
+      "copied": "복사됨",
+      "processing": "변환 중…",
+      "ready": "내 이미지",
+      "delete": "삭제",
+      "empty": "업로드한 이미지가 없습니다."
+    }
+  },
+  "error": {
+    "401": {
+      "title": "로그인이 필요합니다",
+      "description": "이 페이지를 이용하려면 로그인이 필요합니다."
+    },
+    "403": {
+      "title": "접근 권한이 없습니다",
+      "description": "이 페이지에 접근할 수 있는 권한이 없습니다."
+    },
+    "404": {
+      "title": "페이지를 찾을 수 없어요",
+      "description": "요청하신 페이지가 존재하지 않거나 이동되었을 수 있습니다."
+    },
+    "500": {
+      "title": "문제가 발생했습니다",
+      "description": "잠시 후 다시 시도해 주세요."
+    },
+    "503": {
+      "title": "잠시 이용이 어려워요",
+      "description": "서비스를 점검 중입니다. 잠시 후 다시 시도해 주세요."
+    },
+    "back_to_home": "홈으로 돌아가기",
+    "maintenance": {
+      "title": "점검 중입니다",
+      "description": "더 나은 서비스를 위해 잠시 점검을 진행하고 있어요."
+    }
+  }
+}
