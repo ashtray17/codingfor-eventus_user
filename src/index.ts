@@ -25,10 +25,10 @@ if (typeof window !== 'undefined') {
 }
 
 // Logger (G7Core 초기화 전에도 동작하도록 폴백 포함)
-const logger = ((window as any).G7Core?.createLogger?.('Template:codingfor-community_user')) ?? {
-    log: (...args: unknown[]) => console.log('[Template:codingfor-community_user]', ...args),
-    warn: (...args: unknown[]) => console.warn('[Template:codingfor-community_user]', ...args),
-    error: (...args: unknown[]) => console.error('[Template:codingfor-community_user]', ...args),
+const logger = ((window as any).G7Core?.createLogger?.('Template:codingfor-eventus_user')) ?? {
+    log: (...args: unknown[]) => console.log('[Template:codingfor-eventus_user]', ...args),
+    warn: (...args: unknown[]) => console.warn('[Template:codingfor-eventus_user]', ...args),
+    error: (...args: unknown[]) => console.error('[Template:codingfor-eventus_user]', ...args),
 };
 
 // Basic 10개 컴포넌트

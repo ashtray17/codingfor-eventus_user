@@ -27,7 +27,7 @@ export default defineConfig(({ mode }) => ({
   build: {
     lib: {
       entry: path.resolve(__dirname, 'src/index.ts'),
-      name: 'CodingforCommunityUser',
+      name: 'CodingforEventusUser',
       fileName: 'components',
       formats: ['iife'],
     },

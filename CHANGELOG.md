@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.1.1] - 2026-10-24
+
+### Fixed
+
+- IIFE 번들 전역 변수명을 `CodingforEventusUser`로 변경하고 `components.json`의 `templateId`를 `codingfor-eventus_user`로 일치시켜 컴포넌트 번들 로드 오류를 수정했습니다.
+
 ## [0.1.0] - 2026-10-24
 
 ### Added
