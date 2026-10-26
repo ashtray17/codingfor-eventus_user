@@ -171,6 +171,16 @@
                       "className": "rounded-ctl border border-rule px-3.5 py-2 text-[13px] font-medium text-muted transition-colors duration-150 hover:border-rule-2 hover:text-ink"
                     },
                     "text": "$t:community.mypage.change_password"
+                  },
+                  {
+                    "id": "mypage_to_photo",
+                    "type": "basic",
+                    "name": "A",
+                    "props": {
+                      "href": "/photo",
+                      "className": "rounded-ctl border border-rule px-3.5 py-2 text-[13px] font-medium text-muted transition-colors duration-150 hover:border-rule-2 hover:text-ink"
+                    },
+                    "text": "$t:community.sidebar.quick_photo"
                   }
                 ]
               }
@@ -253,6 +263,25 @@
                       "className": "min-w-0 flex-1 truncate text-[14px] text-ink-2 group-hover:text-accent"
                     },
                     "text": "{{post.title ?? ''}}"
+                  },
+                  {
+                    "id": "mypage_post_cc_{{post.id}}",
+                    "type": "basic",
+                    "name": "Span",
+                    "if": "{{(post.comment_count ?? 0) > 0}}",
+                    "props": {
+                      "className": "tnum shrink-0 font-mono text-[11px] font-semibold text-accent"
+                    },
+                    "text": "{{post.comment_count ?? 0}}"
+                  },
+                  {
+                    "id": "mypage_post_views_{{post.id}}",
+                    "type": "basic",
+                    "name": "Span",
+                    "props": {
+                      "className": "tnum hidden shrink-0 font-mono text-[11px] text-faint md:block"
+                    },
+                    "text": "{{post.view_count ?? 0}}"
                   },
                   {
                     "id": "mypage_post_date_{{post.id}}",

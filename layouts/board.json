@@ -42,7 +42,8 @@
       "loading_strategy": "progressive",
       "refetchOnMount": true,
       "params": {
-        "page": "{{query.page ?? 1}}"
+        "page": "{{query.page ?? 1}}",
+        "category": "{{query.category ?? ''}}"
       },
       "fallback": {
         "data": {
@@ -54,7 +55,8 @@
           },
           "board": {
             "name": "",
-            "description": ""
+            "description": "",
+            "categories": []
           },
           "abilities": {
             "can_read": false,
@@ -207,6 +209,68 @@
                   }
                 ],
                 "text": "$t:community.board.write"
+              }
+            ]
+          },
+          {
+            "id": "board_categories",
+            "type": "basic",
+            "name": "Div",
+            "if": "{{(posts?.data?.board?.categories ?? []).length > 0}}",
+            "props": {
+              "className": "mb-4 flex flex-wrap items-center gap-1.5"
+            },
+            "children": [
+              {
+                "id": "board_category_all",
+                "type": "basic",
+                "name": "Button",
+                "props": {
+                  "type": "button",
+                  "aria-pressed": "{{!(query.category ?? '')}}",
+                  "className": "cursor-pointer rounded-full border px-3.5 py-1.5 text-[12px] font-semibold transition-colors duration-150 {{!(query.category ?? '') ? 'border-accent bg-accent text-accent-ink' : 'border-rule bg-paper-2 text-muted hover:border-rule-2 hover:text-ink'}}"
+                },
+                "actions": [
+                  {
+                    "type": "click",
+                    "handler": "navigate",
+                    "params": {
+                      "path": "/board/{{route.slug}}",
+                      "query": {
+                        "page": 1
+                      }
+                    }
+                  }
+                ],
+                "text": "$t:community.board.category_all"
+              },
+              {
+                "id": "board_category_item_{{category_item}}",
+                "type": "basic",
+                "name": "Button",
+                "iteration": {
+                  "source": "{{posts?.data?.board?.categories ?? []}}",
+                  "item_var": "category_item"
+                },
+                "props": {
+                  "type": "button",
+                  "aria-pressed": "{{(query.category ?? '') === category_item}}",
+                  "className": "cursor-pointer rounded-full border px-3.5 py-1.5 text-[12px] font-semibold transition-colors duration-150 {{(query.category ?? '') === category_item ? 'border-accent bg-accent text-accent-ink' : 'border-rule bg-paper-2 text-muted hover:border-rule-2 hover:text-ink'}}"
+                },
+                "actions": [
+                  {
+                    "type": "click",
+                    "handler": "navigate",
+                    "params": {
+                      "path": "/board/{{route.slug}}",
+                      "query": {
+                        "category": "{{category_item}}",
+                        "page": 1
+                      }
+                    }
+                  }
+                ],
+                "text": "{{category_item}}"
               }
             ]
           },

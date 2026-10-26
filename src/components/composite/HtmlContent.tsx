@@ -111,7 +111,7 @@ export const HtmlContent: React.FC<HtmlContentProps> = ({
   return (
     <div
       id={id}
-      className={`rich-html ${className}`.trim().replace(/\s+/g, ' ')}
+      className={`rich-html whitespace-pre-line ${className}`.trim().replace(/\s+/g, ' ')}
       dangerouslySetInnerHTML={{ __html: sanitizedHtml }}
       {...rest}
     />

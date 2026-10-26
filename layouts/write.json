@@ -292,6 +292,36 @@
                 ]
               },
               {
+                "id": "write_image_uploader",
+                "type": "composite",
+                "name": "ImageUploader",
+                "props": {
+                  "compact": true,
+                  "targetTextareaSelector": "textarea[name='content']",
+                  "title": "$t:community.write.uploader_title",
+                  "description": "$t:community.write.uploader_description",
+                  "chooseLabel": "$t:community.images.choose",
+                  "insertLabel": "$t:community.images.insert",
+                  "insertAllLabel": "$t:community.images.insert_all",
+                  "insertedLabel": "$t:community.images.inserted",
+                  "copyLabel": "$t:community.images.copy",
+                  "copyAllLabel": "$t:community.images.copy_all",
+                  "copiedLabel": "$t:community.images.copied",
+                  "copyAllCopiedLabel": "$t:community.images.copy_all_copied",
+                  "processingLabel": "$t:community.images.processing",
+                  "readyLabel": "$t:community.images.ready",
+                  "deleteLabel": "$t:community.images.delete",
+                  "emptyLabel": "$t:community.images.empty",
+                  "maxSizeMb": 50,
+                  "memberMaxSizeMb": 250,
+                  "chunkSizeMb": 16,
+                  "uploadEndpoint": "/api/modules/codingfor-imagehost/images",
+                  "listEndpoint": "/api/modules/codingfor-imagehost/images",
+                  "statusBase": "/api/modules/codingfor-imagehost/images/",
+                  "className": "mb-4 bg-paper"
+                }
+              },
+              {
                 "id": "write_error",
                 "type": "basic",
                 "name": "Div",
@@ -362,7 +392,7 @@
                               "body": {
                                 "title": "{{_local.write_title ?? ''}}",
                                 "content": "{{_local.write_content ?? ''}}",
-                                "content_mode": "text",
+                                "content_mode": "{{(_local.write_content ?? '').includes('<') ? 'html' : 'text'}}",
                                 "category": "{{_local.write_category ?? ''}}"
                               }
                             },

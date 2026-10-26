@@ -14,6 +14,11 @@ export interface ImageUploaderProps extends React.HTMLAttributes<HTMLElement> {
     title?: string;
     description?: string;
     chooseLabel?: string;
+    insertLabel?: string;
+    insertAllLabel?: string;
+    insertedLabel?: string;
+    targetTextareaSelector?: string;
+    compact?: boolean;
     copyLabel?: string;
     copyAllLabel?: string;
     copiedLabel?: string;

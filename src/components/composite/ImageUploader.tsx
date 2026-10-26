@@ -15,6 +15,11 @@ export interface ImageUploaderProps extends React.HTMLAttributes<HTMLElement> {
   title?: string;
   description?: string;
   chooseLabel?: string;
+  insertLabel?: string;
+  insertAllLabel?: string;
+  insertedLabel?: string;
+  targetTextareaSelector?: string;
+  compact?: boolean;
   copyLabel?: string;
   copyAllLabel?: string;
   copiedLabel?: string;
@@ -134,6 +139,11 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
   title = 'Image Embed',
   description = 'Upload images and copy their WebP Embed code.',
   chooseLabel = 'Choose images',
+  insertLabel = 'Insert in post',
+  insertAllLabel = 'Insert all in post',
+  insertedLabel = 'Inserted',
+  targetTextareaSelector = '',
+  compact = false,
   copyLabel = 'Copy Embed',
   copyAllLabel = 'Copy batch Embed',
   copiedLabel = 'Copied',
@@ -150,7 +160,9 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
   const [batchAssetIds, setBatchAssetIds] = useState<number[]>([]);
   const [error, setError] = useState('');
   const [copiedHash, setCopiedHash] = useState('');
+  const [insertedHash, setInsertedHash] = useState('');
   const [batchCopied, setBatchCopied] = useState(false);
+  const [batchInserted, setBatchInserted] = useState(false);
   const previewUrls = useRef(new Set<string>());
   const chunkSize = Math.max(1, chunkSizeMb) * 1024 * 1024;
 
@@ -342,6 +354,51 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
     return asset.display_url ? `<img src="${asset.display_url}" alt="" loading="lazy">` : '';
   };
 
+  const insertTextIntoTarget = (snippet: string): boolean => {
+    if (!targetTextareaSelector || typeof document === 'undefined') return false;
+    const textarea = document.querySelector<HTMLTextAreaElement>(targetTextareaSelector);
+    if (!textarea) return false;
+
+    const current = textarea.value ?? '';
+    const start = typeof textarea.selectionStart === 'number' ? textarea.selectionStart : current.length;
+    const end = typeof textarea.selectionEnd === 'number' ? textarea.selectionEnd : current.length;
+    const prefix = start > 0 && current[start - 1] !== '\n' ? '\n' : '';
+    const suffix = end < current.length && current[end] !== '\n' ? '\n' : '\n';
+    const nextValue = `${current.slice(0, start)}${prefix}${snippet}${suffix}${current.slice(end)}`;
+    const nativeSetter = Object.getOwnPropertyDescriptor(window.HTMLTextAreaElement.prototype, 'value')?.set;
+    if (nativeSetter) {
+      nativeSetter.call(textarea, nextValue);
+    } else {
+      textarea.value = nextValue;
+    }
+    textarea.dispatchEvent(new Event('input', { bubbles: true }));
+    textarea.dispatchEvent(new Event('change', { bubbles: true }));
+    textarea.focus();
+    return true;
+  };
+
+  const insertEmbed = (asset: ImageAsset): void => {
+    const snippet = embedFor(asset);
+    if (!snippet) return;
+    if (insertTextIntoTarget(snippet)) {
+      setInsertedHash(asset.hash);
+      window.setTimeout(() => setInsertedHash(''), 1500);
+    }
+  };
+
+  const insertBatch = (): void => {
+    const embeds = assets
+      .filter((asset) => batchAssetIds.includes(asset.id) && asset.status === 'ready')
+      .map(embedFor)
+      .filter(Boolean);
+    if (embeds.length === 0) return;
+
+    if (insertTextIntoTarget(embeds.join('\n'))) {
+      setBatchInserted(true);
+      window.setTimeout(() => setBatchInserted(false), 1500);
+    }
+  };
+
   const copyEmbed = async (asset: ImageAsset): Promise<void> => {
     try {
       await copyText(embedFor(asset));
@@ -384,7 +441,11 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
   return (
     <section className={`rounded-card border border-rule bg-paper-2 p-5 ${className}`.trim()} {...rest}>
       <div className="border-b border-rule pb-4">
-        <h1 className="text-[22px] font-bold tracking-[-0.03em] text-ink">{title}</h1>
+        {compact ? (
+          <h2 className="text-[16px] font-bold tracking-[-0.02em] text-ink">{title}</h2>
+        ) : (
+          <h1 className="text-[22px] font-bold tracking-[-0.03em] text-ink">{title}</h1>
+        )}
         <p className="mt-1 text-[13px] leading-6 text-muted">{description}</p>
       </div>
 
@@ -394,6 +455,7 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
           type="file"
           accept={accept}
           multiple
+          aria-label={chooseLabel}
           className="sr-only"
           onChange={(event) => {
             void handleFiles(event.target.files);
@@ -429,12 +491,19 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
       )}
 
       <div className="mt-6">
-        <div className="flex items-center justify-between gap-3">
+        <div className="flex flex-wrap items-center justify-between gap-3">
           <h2 className="text-[13px] font-semibold tracking-[0.08em] text-muted">{readyLabel}</h2>
           {assets.some((asset) => batchAssetIds.includes(asset.id) && asset.status === 'ready') && (
-            <button type="button" className="cursor-pointer rounded-ctl border border-rule px-2.5 py-1.5 text-[11px] font-medium text-ink transition-colors duration-150 hover:border-rule-2" onClick={() => void copyBatch()}>
-              {batchCopied ? copyAllCopiedLabel : copyAllLabel}
-            </button>
+            <div className="flex flex-wrap items-center gap-2">
+              {targetTextareaSelector ? (
+                <button type="button" className="cursor-pointer rounded-ctl bg-accent px-2.5 py-1.5 text-[11px] font-semibold text-accent-ink transition-colors duration-150 hover:bg-accent-hover" onClick={() => insertBatch()}>
+                  {batchInserted ? insertedLabel : insertAllLabel}
+                </button>
+              ) : null}
+              <button type="button" className="cursor-pointer rounded-ctl border border-rule px-2.5 py-1.5 text-[11px] font-medium text-ink transition-colors duration-150 hover:border-rule-2" onClick={() => void copyBatch()}>
+                {batchCopied ? copyAllCopiedLabel : copyAllLabel}
+              </button>
+            </div>
           )}
         </div>
         {assets.length === 0 && pending.length === 0 ? (
@@ -451,7 +520,12 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
                   <p className="mt-1 tnum text-[11px] text-muted">
                     {asset.status === 'ready' ? readyLabel : asset.status === 'failed' ? asset.error_code : `${processingLabel} ${asset.progress_percent ?? 0}%`}
                   </p>
-                  <div className="mt-3 flex gap-2">
+                  <div className="mt-3 flex flex-wrap gap-1.5">
+                    {asset.status === 'ready' && targetTextareaSelector ? (
+                      <button type="button" className="cursor-pointer rounded-ctl bg-accent px-2.5 py-1.5 text-[11px] font-semibold text-accent-ink transition-colors duration-150 hover:bg-accent-hover" onClick={() => insertEmbed(asset)}>
+                        {insertedHash === asset.hash ? insertedLabel : insertLabel}
+                      </button>
+                    ) : null}
                     {asset.status === 'ready' && (
                       <button type="button" className="cursor-pointer rounded-ctl border border-rule px-2.5 py-1.5 text-[11px] font-medium text-ink transition-colors duration-150 hover:border-rule-2" onClick={() => void copyEmbed(asset)}>
                         {copiedHash === asset.hash ? copiedLabel : copyLabel}

@@ -1,6 +1,6 @@
 {
   "name": "@codingfor/eventus-user-template",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "Codingfor Event-us style community user template (core-update isolated)",
   "type": "module",
   "main": "dist/js/components.iife.js",
